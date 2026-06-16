@@ -13,7 +13,7 @@ interface FormData {
   askerlikGunu: number;
   askerlikNedir: 'once' | 'sonra';
   malulukTuru: 'yok' | 'sk284' | 'sk285';
-  derece: '%80+' | '%60-79' | '%40-%49' | '%50-%59' | '';
+  derece: '%40-%49' | '%50-%59' | '';
   malulTarihi: string;
 }
 
@@ -108,13 +108,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-7xl mx-auto grid grid-cols-3 gap-6">
-        {/* FORM PANEL */}
         <div className="col-span-1 sticky top-4 h-fit">
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">SGK Emeklilik Hak Hesaplayıcı</h1>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* STATUS */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Statü *</label>
                 <select
@@ -130,7 +128,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* DOĞUM TARİHİ */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Doğum Tarihi (DD.MM.YYYY) *</label>
                 <input
@@ -142,7 +139,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* CİNSİYET */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Cinsiyet *</label>
                 <div className="flex gap-4">
@@ -167,7 +163,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* İLK GİRİŞ TARİHİ */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">İlk Giriş Tarihi (DD.MM.YYYY) *</label>
                 <input
@@ -179,7 +174,6 @@ export default function Home() {
                 />
               </div>
 
-              {/* PRİM GÜNÜ & BORÇLANMA */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Prim Günü *</label>
                 <input
@@ -222,7 +216,6 @@ export default function Home() {
                 )}
               </div>
 
-              {/* ASKERLİK */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Askerlik Günü</label>
                 <input
@@ -254,7 +247,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* MALÜLLÜK */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Malüllük Türü</label>
                 <select
@@ -268,7 +260,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* DERECE & TARİH */}
               {formData.malulukTuru === 'sk285' && (
                 <>
                   <div>
@@ -279,10 +270,8 @@ export default function Home() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     >
                       <option value="">Seçiniz</option>
-                      <option value="%80+">%80+ (Ağır Engelli)</option>
-                      <option value="%60-79">%60-79 (Orta Engelli)</option>
-                      <option value="%40-%49">%40-%49 (Hafif Engelli)</option>
-                      <option value="%50-%59">%50-%59 (Hafif-Orta Engelli)</option>
+                      <option value="%40-%49">%40-%49</option>
+                      <option value="%50-%59">%50-%59</option>
                     </select>
                   </div>
                   <div>
@@ -308,7 +297,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* RESULTS PANEL */}
         <div className="col-span-2">
           {submitted && results ? (
             <div className="space-y-4">
