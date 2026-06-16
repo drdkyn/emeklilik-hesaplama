@@ -1,4 +1,4 @@
-import rules from './rules.json';
+import rules from './rules.json' assert { type: 'json' };
 
 interface RetirementInput {
   status: '4a' | '4b' | '4c' | '2925';
