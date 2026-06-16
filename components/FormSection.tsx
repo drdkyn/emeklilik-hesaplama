@@ -10,6 +10,7 @@ interface FormSectionProps {
     askerlikNedir: 'once' | 'sonra';
     ilkIsGirisOnceEngelliMi: boolean;
     statular: string[];
+    malulBirimi?: string; // 'yok' | 'sk28/4' | 'sk28/5'
   };
   hesaplananIlkIsGirisTarihi?: string;
   errors: Record<string, string>;
@@ -17,6 +18,7 @@ interface FormSectionProps {
   onCheckbox: (statü: string) => void;
   onAskerlikChange: (nedir: 'once' | 'sonra') => void;
   onEngelliChange: (engelli: boolean) => void;
+  onMalulBirimiChange: (birim: string) => void;
   onHesapla: () => void;
 }
 
@@ -28,6 +30,7 @@ export default function FormSection({
   onCheckbox,
   onAskerlikChange,
   onEngelliChange,
+  onMalulBirimiChange,
   onHesapla,
 }: FormSectionProps) {
   return (
@@ -66,7 +69,44 @@ export default function FormSection({
         )}
       </div>
 
-      {/* ========== FORM ALANLARI ========== */}
+      {/* ========== MALÜLÜK/ENGELLİLİK (STATÜ SEÇILİ İSE) ========== */}
+      {form.statular.length > 0 && (
+        <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-300">
+          <label className="block text-sm font-semibold text-gray-900 mb-3">
+            Malüllük/Engellilik Durumu
+            <span className="text-gray-500 text-xs ml-1">(5510 SK 28. Md.)</span>
+          </label>
+
+          {/* 4/a, 4/b, 4/c için malüllük seçeneği */}
+          {['4a', '4b', '4c'].includes(form.statular[0]) && (
+            <select
+              value={form.malulBirimi || 'yok'}
+              onChange={(e) => onMalulBirimiChange(e.target.value)}
+              className="input-field w-full"
+            >
+              <option value="yok">Malül değilim</option>
+              <option value="sk28/4">
+                {form.statular[0] === '4c' 
+                  ? '27.04.2005 öncesi Engelli'
+                  : '28/4 - İlk işe girişte malül'}
+              </option>
+            </select>
+          )}
+
+          {/* 2925 için */}
+          {form.statular[0] === '2925' && (
+            <p className="text-sm text-gray-700">
+              2925 Tarım Sigortası statüsü malüllük koşulu bulunmamaktadır.
+            </p>
+          )}
+
+          {form.malulBirimi && form.malulBirimi !== 'yok' && (
+            <p className="text-xs text-green-700 mt-2 italic">
+              💡 Malüllük durumuna göre şartlar otomatik güncellenecektir.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Birth Date */}
       <div className="mb-4">

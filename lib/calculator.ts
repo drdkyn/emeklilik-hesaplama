@@ -61,7 +61,8 @@ export const hesaplaEmeklilik = (
   askerlikNedir: 'once' | 'sonra',
   cinsiyet: 'erkek' | 'kadin',
   statular: string[],
-  ilkIsGirisOnceEngelliMi?: boolean
+  ilkIsGirisOnceEngelliMi?: boolean,
+  malulBirimi?: string
 ): HesaplamaResultati => {
   const dogumTar = parseDate(dogumTarihi);
   const originalIlkGirisTar = parseDate(ilkIsGirisTarihi);

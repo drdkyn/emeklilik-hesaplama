@@ -16,6 +16,7 @@ export default function Home() {
     askerlikNedir: 'sonra' as 'once' | 'sonra',
     ilkIsGirisOnceEngelliMi: false,
     statular: ['4a'] as string[],
+    malulBirimi: 'yok', // 'yok' | 'sk28/4' | 'sk28/5'
   });
 
   const [hesaplananIlkIsGirisTarihi, setHesaplananIlkIsGirisTarihi] = useState<string>('');
@@ -93,6 +94,10 @@ export default function Home() {
     setForm({ ...form, ilkIsGirisOnceEngelliMi: engelli });
   };
 
+  const handleMalulBirimiChange = (birim: string) => {
+    setForm({ ...form, malulBirimi: birim });
+  };
+
   const sonuc = useMemo(
     () =>
       hesaplaEmeklilik(
@@ -146,6 +151,7 @@ export default function Home() {
               onCheckbox={handleCheckbox}
               onAskerlikChange={handleAskerlikChange}
               onEngelliChange={handleEngelliChange}
+              onMalulBirimiChange={handleMalulBirimiChange}
               onHesapla={handleHesapla}
             />
           </div>
