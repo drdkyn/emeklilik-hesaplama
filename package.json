@@ -1,6 +1,7 @@
 {
   "name": "emeklilik-hesaplama",
   "version": "1.0.0",
+  "type": "module",
   "description": "Turkish SGK Retirement Calculator - Comprehensive retirement eligibility calculator",
   "private": true,
   "scripts": {
