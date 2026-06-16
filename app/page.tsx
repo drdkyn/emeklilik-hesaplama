@@ -13,7 +13,7 @@ interface FormData {
   askerlikGunu: number;
   askerlikNedir: 'once' | 'sonra';
   malulukTuru: 'yok' | 'sk284' | 'sk285';
-  derece: '%40-%49' | '%50-%59' | '';
+  derece: '%80+' | '%60-79' | '%50-%59' | '%40-%49' | '';
   malulTarihi: string;
 }
 
@@ -270,8 +270,10 @@ export default function Home() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     >
                       <option value="">Seçiniz</option>
-                      <option value="%40-%49">%40-%49</option>
-                      <option value="%50-%59">%50-%59</option>
+                      <option value="%80+">%80+ (Ağır - Vergi İnd.)</option>
+                      <option value="%60-79">%60-79 (Orta - Vergi İnd.)</option>
+                      <option value="%50-%59">%50-%59 (SK 28/5)</option>
+                      <option value="%40-%49">%40-%49 (SK 28/5)</option>
                     </select>
                   </div>
                   <div>
