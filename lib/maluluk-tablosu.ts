@@ -1,5 +1,8 @@
 // Malüllük/Engellilik Derecelerine Göre Şartlar
 // Excel Kaynakları: Kitap2.xlsx (4/a), Kitap1.xlsx (4/b, 4/c)
+// 
+// Derece arttıkça (ağırlık arttıkça) → Hizmet yılı şartı AZALIR
+// Mantık: Daha ağır malülük = daha az çalışma yapabilme = daha az hizmet yılı gerekli
 
 export interface MalullikSarti {
   derece: string; // '%40-%49', '%50-%59', '%60+'
@@ -10,12 +13,13 @@ export interface MalullikSarti {
 
 export interface MalullikTablosu {
   statü: '4a' | '4b' | '4c';
-  tip: 'sk28/4' | 'sk28/5'; // 4=İlk işe girişte, 5=İşe girdikten sonra
+  tip: 'sk28/4' | 'sk28/5';
   saritlar: MalullikSarti[];
 }
 
 // ============= 4/a (SSK) - 5510 SK 28/5 =============
 // İşe girdikten sonra malül olan sigortalılar
+// Derece ↑ → Hizmet yılı ↓
 export const malullik4a: MalullikTablosu = {
   statü: '4a',
   tip: 'sk28/5',
@@ -24,19 +28,19 @@ export const malullik4a: MalullikTablosu = {
       derece: '%40-%49',
       hizmetYili: 20,
       gunSayisi: 5075,
-      aciklama: 'Çalışma gücü kayıp oranı %40-%49 arası',
+      aciklama: 'Hafif malüllük - en çok hizmet yılı',
     },
     {
       derece: '%50-%59',
-      hizmetYili: 20,
+      hizmetYili: 15,
       gunSayisi: 5300,
-      aciklama: 'Çalışma gücü kayıp oranı %50-%59 arası',
+      aciklama: 'Orta malüllük - daha az hizmet yılı',
     },
     {
       derece: '%60+',
-      hizmetYili: 20,
+      hizmetYili: 10,
       gunSayisi: 5450,
-      aciklama: 'Çalışma gücü kayıp oranı %60 ve üzeri',
+      aciklama: 'Ağır/çok ağır malüllük - en az hizmet yılı (10 yıl)',
     },
   ],
 };
@@ -50,46 +54,45 @@ export const malullik4b: MalullikTablosu = {
       derece: '%40-%49',
       hizmetYili: 15,
       gunSayisi: 5400,
-      aciklama: 'Çalışma gücü kayıp oranı %40-%49 arası',
+      aciklama: 'Hafif - 15 yıl',
     },
     {
       derece: '%50-%59',
-      hizmetYili: 15,
+      hizmetYili: 12,
       gunSayisi: 5400,
-      aciklama: 'Çalışma gücü kayıp oranı %50-%59 arası',
+      aciklama: 'Orta - 12 yıl',
     },
     {
       derece: '%60+',
-      hizmetYili: 15,
+      hizmetYili: 10,
       gunSayisi: 3960,
-      aciklama: 'Çalışma gücü kayıp oranı %60 ve üzeri',
+      aciklama: 'Ağır - 10 yıl (en az)',
     },
   ],
 };
 
-// ============= 4/c (Memur) - Engelli İştirakçiler =============
-// 27.04.2005 öncesi vs sonrası farklı şartlar var
+// ============= 4/c (Memur) - 5510 SK 28/5 =============
 export const malullik4c_oncesi: MalullikTablosu = {
   statü: '4c',
   tip: 'sk28/5',
   saritlar: [
     {
       derece: '%40-%49',
-      hizmetYili: 15,
+      hizmetYili: 20,
       gunSayisi: 6480,
-      aciklama: 'Çalışma gücü kayıp oranı %40-%49 arası (27.04.2005 öncesi)',
+      aciklama: 'Hafif - 20 yıl (27.04.2005 öncesi)',
     },
     {
       derece: '%50-%59',
       hizmetYili: 15,
       gunSayisi: 5760,
-      aciklama: 'Çalışma gücü kayıp oranı %50-%59 arası (27.04.2005 öncesi)',
+      aciklama: 'Orta - 15 yıl (27.04.2005 öncesi)',
     },
     {
       derece: '%60+',
-      hizmetYili: 15,
+      hizmetYili: 10,
       gunSayisi: 5760,
-      aciklama: 'Çalışma gücü kayıp oranı %60 ve üzeri (27.04.2005 öncesi)',
+      aciklama: 'Ağır - 10 yıl (27.04.2005 öncesi)',
     },
   ],
 };
@@ -100,27 +103,27 @@ export const malullik4c_sonrasi: MalullikTablosu = {
   saritlar: [
     {
       derece: '%40-%49',
-      hizmetYili: 15,
+      hizmetYili: 20,
       gunSayisi: 6480,
-      aciklama: 'Çalışma gücü kayıp oranı %40-%49 arası (27.04.2005 sonrası)',
+      aciklama: 'Hafif - 20 yıl (27.04.2005 sonrası)',
     },
     {
       derece: '%50-%59',
       hizmetYili: 15,
       gunSayisi: 5760,
-      aciklama: 'Çalışma gücü kayıp oranı %50-%59 arası (27.04.2005 sonrası)',
+      aciklama: 'Orta - 15 yıl (27.04.2005 sonrası)',
     },
     {
       derece: '%60+',
-      hizmetYili: 15,
+      hizmetYili: 10,
       gunSayisi: 5760,
-      aciklama: 'Çalışma gücü kayıp oranı %60 ve üzeri (27.04.2005 sonrası)',
+      aciklama: 'Ağır - 10 yıl (27.04.2005 sonrası)',
     },
   ],
 };
 
 // ============= İLK İŞE GİRİŞTE MALÜL (SK 28/4) =============
-// Yaşsız, sabit şartlar
+// Yaşsız, sabit şartlar (derece yoksul)
 export const sk28_4_saritlari = {
   '4a': {
     hizmetYili: 15,
@@ -163,7 +166,7 @@ export const getMalullikSaritlari = (
 
 export const getMalulDereceleri = (statü: string, malulBirimi: string) => {
   if (malulBirimi === 'sk28/4') {
-    return []; // Derece seçimi yok
+    return [];
   }
 
   if (malulBirimi === 'sk28/5') {
