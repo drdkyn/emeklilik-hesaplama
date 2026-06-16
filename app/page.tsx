@@ -83,7 +83,7 @@ export default function Home() {
           ilkGirisTarihi: formData.ilkGirisTarihi,
           priGunu: formData.priGunu,
           borçlanmaOption: formData.borçlanmaOption,
-          borçlanmaGunu: formData.borçlanmaOption === 'dahil' ? formData.borçlanmaGunu : 0,
+          borçlanmaGunu: formData.borçlanmaGunu,
           askerlikGunu: formData.askerlikGunu,
           askerlikNedir: formData.askerlikNedir,
           malulukTuru: formData.malulukTuru,
@@ -175,7 +175,31 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prim Günü *</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-sm font-medium text-gray-700">Prim Günü *</label>
+                  <div className="flex gap-3">
+                    <label className="flex items-center gap-1 cursor-pointer">
+                      <input
+                        type="radio"
+                        className="w-3.5 h-3.5"
+                        value="hariç"
+                        checked={formData.borçlanmaOption === 'hariç'}
+                        onChange={() => setFormData({ ...formData, borçlanmaOption: 'hariç' })}
+                      />
+                      <span className="text-xs text-gray-600">Borçlanma Hariç</span>
+                    </label>
+                    <label className="flex items-center gap-1 cursor-pointer">
+                      <input
+                        type="radio"
+                        className="w-3.5 h-3.5"
+                        value="dahil"
+                        checked={formData.borçlanmaOption === 'dahil'}
+                        onChange={() => setFormData({ ...formData, borçlanmaOption: 'dahil' })}
+                      />
+                      <span className="text-xs text-gray-600">Borçlanma Dahil</span>
+                    </label>
+                  </div>
+                </div>
                 <input
                   type="number"
                   value={formData.priGunu}
@@ -184,36 +208,18 @@ export default function Home() {
                   placeholder="0"
                 />
 
-                <div className="mt-3 space-y-2">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      value="hariç"
-                      checked={formData.borçlanmaOption === 'hariç'}
-                      onChange={(e) => setFormData({ ...formData, borçlanmaOption: 'hariç' })}
-                    />
-                    <span className="text-sm">Borçlanma Hariç</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      value="dahil"
-                      checked={formData.borçlanmaOption === 'dahil'}
-                      onChange={(e) => setFormData({ ...formData, borçlanmaOption: 'dahil' })}
-                    />
-                    <span className="text-sm">Borçlanma Dahil</span>
-                  </label>
-                </div>
-
-                {formData.borçlanmaOption === 'dahil' && (
-                  <input
-                    type="number"
-                    value={formData.borçlanmaGunu}
-                    onChange={(e) => setFormData({ ...formData, borçlanmaGunu: parseInt(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md mt-2"
-                    placeholder="Borçlanma Günü"
-                  />
-                )}
+                <input
+                  type="number"
+                  value={formData.borçlanmaGunu}
+                  onChange={(e) => setFormData({ ...formData, borçlanmaGunu: parseInt(e.target.value) || 0 })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md mt-2"
+                  placeholder="Borçlanma Günü"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.borçlanmaOption === 'hariç'
+                    ? '✓ Borçlanma günü prim gününe EKLENECEK'
+                    : '✓ Borçlanma zaten prim günü içinde — EKLENMEYECEK'}
+                </p>
               </div>
 
               <div>

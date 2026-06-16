@@ -87,8 +87,10 @@ export function calculateRetirementOptionsDB(input: CalculatorInput): Retirement
   const serviceYears = calculateServiceYears(ilkGirisTarihi, today);
   
   // BORÇLANMA HESAPLAMASI
-  const totalDays = 
-    borçlanmaOption === 'dahil' 
+  // - dahil: borçlanma zaten prim günü içinde → EKLEME
+  // - hariç: borçlanma ayrı → prim gününe EKLE
+  const totalDays =
+    borçlanmaOption === 'hariç'
       ? priGunu + askerlikGunu + borçlanmaGunu
       : priGunu + askerlikGunu;
 
