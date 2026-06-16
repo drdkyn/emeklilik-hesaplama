@@ -8,19 +8,17 @@ interface FormSectionProps {
     priGunu: number;
     askerlikBorclanlmasi: number;
     askerlikNedir: 'once' | 'sonra';
-    ilkIsGirisOnceEngelliMi: boolean;
     statular: string[];
     malulBirimi?: string;
-    malulDerece?: string; // Yeni: malüllük derecesi
+    malulDerece?: string;
   };
   hesaplananIlkIsGirisTarihi?: string;
   errors: Record<string, string>;
   onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onCheckbox: (statü: string) => void;
   onAskerlikChange: (nedir: 'once' | 'sonra') => void;
-  onEngelliChange: (engelli: boolean) => void;
   onMalulBirimiChange: (birim: string) => void;
-  onMalulDereceChange?: (derece: string) => void; // Yeni handler
+  onMalulDereceChange?: (derece: string) => void;
   onHesapla: () => void;
 }
 
@@ -31,7 +29,6 @@ export default function FormSection({
   onFormChange,
   onCheckbox,
   onAskerlikChange,
-  onEngelliChange,
   onMalulBirimiChange,
   onMalulDereceChange,
   onHesapla,
@@ -292,29 +289,6 @@ export default function FormSection({
           </div>
         )}
       </div>
-
-      {/* Engelli Checkbox (4/a için) */}
-      {form.statular.length > 0 && form.statular[0] === '4a' && (
-        <div className="mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.ilkIsGirisOnceEngelliMi}
-              onChange={(e) => onEngelliChange(e.target.checked)}
-              className="w-4 h-4 text-purple-600 rounded border-purple-300"
-            />
-            <span className="ml-2 text-sm text-gray-700">
-              İlk işe giriş tarihinden <strong>ÖNCE</strong> engelli (malul) miydim?
-              <span className="text-xs text-gray-500 block mt-1">
-                (Bölge Sağlık Kurulu kararı gerekir)
-              </span>
-            </span>
-          </label>
-          <p className="text-xs text-purple-700 mt-3">
-            💡 Eğer işe başlamadan önce kronik hastalık/engeli varsa işaretle
-          </p>
-        </div>
-      )}
 
       {/* Hesapla Button */}
       <button

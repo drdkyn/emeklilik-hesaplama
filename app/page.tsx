@@ -14,10 +14,9 @@ export default function Home() {
     priGunu: 7200,
     askerlikBorclanlmasi: 0,
     askerlikNedir: 'sonra' as 'once' | 'sonra',
-    ilkIsGirisOnceEngelliMi: false,
     statular: ['4a'] as string[],
     malulBirimi: 'yok',
-    malulDerece: '', // Yeni: Malüllük derecesi
+    malulDerece: '',
   });
 
   const [hesaplananIlkIsGirisTarihi, setHesaplananIlkIsGirisTarihi] = useState<string>('');
@@ -91,10 +90,6 @@ export default function Home() {
     setForm({ ...form, askerlikNedir: nedir });
   };
 
-  const handleEngelliChange = (engelli: boolean) => {
-    setForm({ ...form, ilkIsGirisOnceEngelliMi: engelli });
-  };
-
   const handleMalulBirimiChange = (birim: string) => {
     setForm({ ...form, malulBirimi: birim, malulDerece: '' }); // Derece sıfırla
   };
@@ -155,7 +150,6 @@ export default function Home() {
               onFormChange={handleFormChange}
               onCheckbox={handleCheckbox}
               onAskerlikChange={handleAskerlikChange}
-              onEngelliChange={handleEngelliChange}
               onMalulBirimiChange={handleMalulBirimiChange}
               onMalulDereceChange={handleMalulDereceChange}
               onHesapla={handleHesapla}

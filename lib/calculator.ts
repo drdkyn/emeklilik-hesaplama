@@ -61,7 +61,6 @@ export const hesaplaEmeklilik = (
   askerlikNedir: 'once' | 'sonra',
   cinsiyet: 'erkek' | 'kadin',
   statular: string[],
-  ilkIsGirisOnceEngelliMi?: boolean,
   malulBirimi?: string
 ): HesaplamaResultati => {
   const dogumTar = parseDate(dogumTarihi);
@@ -147,29 +146,6 @@ export const hesaplaEmeklilik = (
         hizmetYili >= 15 &&
         priGunleri >= 3600,
     });
-
-    // Engelli Emeklilik (İlk işe girişten ÖNCE engelli)
-    if (ilkIsGirisOnceEngelliMi) {
-      const engelliGun = getEngelliGun(parseDate(ilkIsGirisTarihi));
-      emeklilikKosullari.push({
-        adi: '4/a (SSK) - Engelli Emeklilik (Yaşsız)',
-        kosullar: [
-          {
-            ad: 'Hizmet Yılı',
-            gerekli: 15,
-            sahip: hizmetYili,
-            basarili: hizmetYili >= 15,
-          },
-          {
-            ad: `Prim Günü (${engelliGun} gün)`,
-            gerekli: engelliGun,
-            sahip: priGunleri,
-            basarili: priGunleri >= engelliGun,
-          },
-        ],
-        tamamlandi: hizmetYili >= 15 && priGunleri >= engelliGun,
-      });
-    }
   }
 
   // ========== 4/b (Bağ-Kur) ==========
