@@ -154,10 +154,11 @@ export default function Home() {
     }, 100);
   };
 
-  const malulSeçildi = sonuclar ? sonuclar.some(s => s.type === 'disability') : (form.malulBirimi && form.malulBirimi !== 'yok');
+  const malulSeçildi = form.malulBirimi && form.malulBirimi !== 'yok';
 
   // Sonuçları sırala: malüllük seçildiyse disability önce, sonra normal ve yaştan
-  // gecerli olmayanlar her grubun sonuna atılır
+  // Sıralama: malüllük seçildiyse disability önce, sonra normal, sonra yaşlılık
+  // Hepsi gösterilir — uygun olanlar yeşil, uygun olmayanlar sarı
   const siraliSonuclar = sonuclar ? (() => {
     const disability = sonuclar.filter(s => s.type === 'disability');
     const normal = sonuclar.filter(s => s.type === 'normal');
