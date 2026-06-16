@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { calculateRetirementOptions } from '@/lib/calculator';
 
 interface FormData {
   status: '4a' | '4b' | '4c' | '2925' | '';
@@ -61,7 +60,7 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.status || !formData.dogumTarihi || !formData.ilkGirisTarihi) {
@@ -71,28 +70,41 @@ export default function Home() {
 
     const dogumTarihi = parseDate(formData.dogumTarihi);
     const ilkGirisTarihi = parseDate(formData.ilkGirisTarihi);
-    const malulTarihi = formData.malulTarihi ? parseDate(formData.malulTarihi) : null;
 
     if (!dogumTarihi || !ilkGirisTarihi) {
       alert('Tarih formatı DD.MM.YYYY olmalıdır');
       return;
     }
 
-    const retirementResults = calculateRetirementOptions({
-      status: formData.status as '4a' | '4b' | '4c' | '2925',
-      dogumTarihi,
-      cinsiyet: formData.cinsiyet,
-      ilkGirisTarihi,
-      priGunu: formData.priGunu,
-      askerlikGunu: formData.askerlikGunu,
-      askerlikNedir: formData.askerlikNedir,
-      malulukTuru: formData.malulukTuru as 'yok' | 'sk284' | 'sk285',
-      derece: formData.derece,
-      malulTarihi,
-    });
+    try {
+      const response = await fetch('/api/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: formData.status,
+          dogumTarihi: formData.dogumTarihi,
+          cinsiyet: formData.cinsiyet,
+          ilkGirisTarihi: formData.ilkGirisTarihi,
+          priGunu: formData.priGunu,
+          askerlikGunu: formData.askerlikGunu,
+          askerlikNedir: formData.askerlikNedir,
+          malulukTuru: formData.malulukTuru,
+          derece: formData.derece,
+          malulTarihi: formData.malulTarihi,
+        }),
+      });
 
-    setResults(retirementResults);
-    setSubmitted(true);
+      const data = await response.json();
+
+      if (data.success) {
+        setResults(data.data);
+        setSubmitted(true);
+      } else {
+        alert(`Hata: ${data.error}`);
+      }
+    } catch (error) {
+      alert('Hesaplama başarısız: ' + (error instanceof Error ? error.message : 'Bilinmeyen hata'));
+    }
   };
 
   return (
