@@ -139,29 +139,36 @@ export const SK284_2925 = [
 // SK 28/5 - İŞE GİRDİKTEN SONRA MALÜL (Derece-Bazlı)
 // ============================================================================
 
-export const SK285_4A = {
-  '%40-%49': { hizmetYili: 20, gun: 5075, yas: null },
-  '%50-%59': { hizmetYili: 15, gun: 5300, yas: null },
-  '%60+': { hizmetYili: 10, gun: 5450, yas: null },
+// ============================================================================
+// SK 28/5 - DERECE + TARİH BAZLI YAPI
+// ============================================================================
+
+// 4/a SK 28/5 - Derece-Bazlı
+export const SK285_4A_DEGREES = {
+  '%50-%59': { hizmetYili: 16, gun: 4320, yas: null },
+  '%40-%49': { hizmetYili: 18, gun: 4680, yas: null },
 };
 
-export const SK285_4B = {
-  '%40-%49': { hizmetYili: 15, gun: 5400, yas: null },
-  '%50-%59': { hizmetYili: 12, gun: 5400, yas: null },
-  '%60+': { hizmetYili: 10, gun: 3960, yas: null },
-};
-
-export const SK285_4C = {
-  '%40-%49': { hizmetYili: 20, gun: 6480, yas: null },
-  '%50-%59': { hizmetYili: 15, gun: 5760, yas: null },
-  '%60+': { hizmetYili: 10, gun: 5760, yas: null },
-};
-
-export const SK285_2925 = {
-  '%40-%49': { hizmetYili: 15, gun: 3600, yas: null },
-  '%50-%59': { hizmetYili: 12, gun: 3600, yas: null },
-  '%60+': { hizmetYili: 10, gun: 3600, yas: null },
-};
+// 2925 SK 28/5 - DERECE + TARİH BAZLI
+export const SK285_2925_DERECE_TARIH = [
+  // %50-%59 Derece
+  { derece: '%50-%59', tarihBaslangic: new Date(2008, 9, 1), tarihBitis: new Date(2008, 11, 31), hizmetYili: 16, gun: 3700 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2009, 0, 1), tarihBitis: new Date(2009, 11, 31), hizmetYili: 16, gun: 3800 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2010, 0, 1), tarihBitis: new Date(2010, 11, 31), hizmetYili: 16, gun: 3900 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2011, 0, 1), tarihBitis: new Date(2011, 11, 31), hizmetYili: 16, gun: 4000 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2012, 0, 1), tarihBitis: new Date(2012, 11, 31), hizmetYili: 16, gun: 4100 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2013, 0, 1), tarihBitis: new Date(2013, 11, 31), hizmetYili: 16, gun: 4200 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2014, 0, 1), tarihBitis: new Date(2014, 11, 31), hizmetYili: 16, gun: 4300 },
+  { derece: '%50-%59', tarihBaslangic: new Date(2015, 0, 1), tarihBitis: new Date(2099, 11, 31), hizmetYili: 16, gun: 4320 },
+  // %40-%49 Derece
+  { derece: '%40-%49', tarihBaslangic: new Date(2008, 9, 1), tarihBitis: new Date(2008, 11, 31), hizmetYili: 18, gun: 4100 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2009, 0, 1), tarihBitis: new Date(2009, 11, 31), hizmetYili: 18, gun: 4200 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2010, 0, 1), tarihBitis: new Date(2010, 11, 31), hizmetYili: 18, gun: 4300 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2011, 0, 1), tarihBitis: new Date(2011, 11, 31), hizmetYili: 18, gun: 4400 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2012, 0, 1), tarihBitis: new Date(2012, 11, 31), hizmetYili: 18, gun: 4500 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2013, 0, 1), tarihBitis: new Date(2013, 11, 31), hizmetYili: 18, gun: 4600 },
+  { derece: '%40-%49', tarihBaslangic: new Date(2014, 0, 1), tarihBitis: new Date(2099, 11, 31), hizmetYili: 18, gun: 4680 },
+];
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -194,18 +201,64 @@ export const getSK284Sarti = (
   };
 };
 
-export const getSK285Sarti = (statü: string, derece: string) => {
-  const tablolar = {
-    '4a': SK285_4A,
-    '4b': SK285_4B,
-    '4c': SK285_4C,
-    '2925': SK285_2925,
-  };
+export const getSK285Sarti = (
+  statü: string,
+  malulTarihi: Date,
+  cinsiyet: 'erkek' | 'kadin',
+  tamMi?: boolean // 4/b, 4/c için Tam/Kısmi belirleme
+) => {
+  // 2925 için derece-bazlı (eski yöntem devam)
+  if (statü === '2925') {
+    // Bu durumda derece parametre olarak gelmeli
+    // Şimdilik boş bırak - form'dan düzeltilecek
+    return null;
+  }
 
-  const tablo = tablolar[statü as keyof typeof tablolar];
-  if (!tablo) return null;
+  // 4/a SK 28/5 - Tarih-bazlı
+  if (statü === '4a') {
+    const rules = malulTarihi >= new Date(2008, 4, 1) ? SK285_4A_NEW : SK285_4A_OLD;
+    const uygunRul = rules.find(
+      (r) => malulTarihi >= r.tarihBaslangic && malulTarihi <= r.tarihBitis
+    );
+    if (!uygunRul) return null;
+    return {
+      hizmetYili: uygunRul.hizmetYili,
+      gun: uygunRul.gun,
+      yas: uygunRul.yas,
+    };
+  }
 
-  return tablo[derece as keyof typeof tablo] || null;
+  // 4/b SK 28/5 - Tarih + Tam/Kısmi
+  if (statü === '4b') {
+    const rules = tamMi ? SK285_4B_TAM : SK285_4B_KISMI;
+    const uygunRul = rules.find(
+      (r) => malulTarihi >= r.tarihBaslangic && malulTarihi <= r.tarihBitis
+    );
+    if (!uygunRul) return null;
+    const yas = cinsiyet === 'kadin' ? uygunRul.yasCadin : uygunRul.yasErkek;
+    return {
+      hizmetYili: uygunRul.hizmetYili,
+      gun: uygunRul.gun,
+      yas,
+    };
+  }
+
+  // 4/c SK 28/5 - Tarih + Tam/Kısmi
+  if (statü === '4c') {
+    const rules = tamMi ? SK285_4C_TAM : SK285_4C_KISMI;
+    const uygunRul = rules.find(
+      (r) => malulTarihi >= r.tarihBaslangic && malulTarihi <= r.tarihBitis
+    );
+    if (!uygunRul) return null;
+    const yas = cinsiyet === 'kadin' ? uygunRul.yasCadin : uygunRul.yasErkek;
+    return {
+      hizmetYili: uygunRul.hizmetYili,
+      gun: uygunRul.gun,
+      yas,
+    };
+  }
+
+  return null;
 };
 
 export const getMalulDereceleri = () => {
