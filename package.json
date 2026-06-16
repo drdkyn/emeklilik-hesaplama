@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node scripts/seed-db.ts"
+    "seed": "node scripts/seed.js"
   },
   "dependencies": {
     "react": "^18.2.0",
