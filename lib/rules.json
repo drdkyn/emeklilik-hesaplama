@@ -87,7 +87,7 @@
       {
         "name": "08.09.1999 Öncesi YAŞTAN",
         "dateFrom": "1976-09-08",
-        "dateTo": "2099-12-31",
+        "dateTo": "1999-09-08",
         "serviceYears": 15,
         "days": 3600,
         "ageWoman": 50,
