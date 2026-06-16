@@ -20,7 +20,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2008-05",
+        "name": "Normal Emeklilik — 2008-05-01",
         "dateFrom": "2008-05-01",
         "dateTo": "2035-12-31",
         "serviceYears": null,
@@ -29,7 +29,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2036-01",
+        "name": "Normal Emeklilik — 2036-01-01",
         "dateFrom": "2036-01-01",
         "dateTo": "2037-12-31",
         "serviceYears": null,
@@ -38,7 +38,7 @@
         "ageMan": 61
       },
       {
-        "name": "Normal Emeklilik — 2038-01",
+        "name": "Normal Emeklilik — 2038-01-01",
         "dateFrom": "2038-01-01",
         "dateTo": "2039-12-31",
         "serviceYears": null,
@@ -47,7 +47,7 @@
         "ageMan": 62
       },
       {
-        "name": "Normal Emeklilik — 2040-01",
+        "name": "Normal Emeklilik — 2040-01-01",
         "dateFrom": "2040-01-01",
         "dateTo": "2041-12-31",
         "serviceYears": null,
@@ -56,7 +56,7 @@
         "ageMan": 63
       },
       {
-        "name": "Normal Emeklilik — 2042-01",
+        "name": "Normal Emeklilik — 2042-01-01",
         "dateFrom": "2042-01-01",
         "dateTo": "2043-12-31",
         "serviceYears": null,
@@ -65,7 +65,7 @@
         "ageMan": 64
       },
       {
-        "name": "Normal Emeklilik — 2044-01",
+        "name": "Normal Emeklilik — 2044-01-01",
         "dateFrom": "2044-01-01",
         "dateTo": "2045-12-31",
         "serviceYears": null,
@@ -74,7 +74,7 @@
         "ageMan": 65
       },
       {
-        "name": "Normal Emeklilik — 2046-01",
+        "name": "Normal Emeklilik — 2046-01-01",
         "dateFrom": "2046-01-01",
         "dateTo": "2047-12-31",
         "serviceYears": null,
@@ -83,7 +83,7 @@
         "ageMan": 65
       },
       {
-        "name": "Normal Emeklilik — 2048-01",
+        "name": "Normal Emeklilik — 2048-01-01",
         "dateFrom": "2048-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": null,
@@ -107,7 +107,7 @@
         "dateFrom": "2008-05-01",
         "dateTo": "2035-12-31",
         "serviceYears": null,
-        "days": 4800,
+        "days": 5400,
         "ageWoman": 61,
         "ageMan": 63
       },
@@ -116,7 +116,7 @@
         "dateFrom": "2036-01-01",
         "dateTo": "2037-12-31",
         "serviceYears": null,
-        "days": 4800,
+        "days": 5400,
         "ageWoman": 62,
         "ageMan": 64
       },
@@ -125,7 +125,7 @@
         "dateFrom": "2038-01-01",
         "dateTo": "2039-12-31",
         "serviceYears": null,
-        "days": 4800,
+        "days": 5400,
         "ageWoman": 63,
         "ageMan": 65
       },
@@ -134,7 +134,7 @@
         "dateFrom": "2040-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": null,
-        "days": 4800,
+        "days": 5400,
         "ageWoman": 65,
         "ageMan": 65
       }
@@ -145,7 +145,7 @@
         "dateFrom": "2008-10-01",
         "dateTo": "2099-12-31",
         "serviceYears": 15,
-        "days": 3600,
+        "days": 3960,
         "degree": null,
         "note": "İşe başlamadan önce malül olduğu belgelenmeli"
       },
@@ -160,7 +160,7 @@
       },
       {
         "name": "SK 28/5 %50-%59",
-        "dateFrom": "2008-10-01",
+        "dateFrom": "2015-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": 16,
         "days": 4320,
@@ -169,7 +169,7 @@
       },
       {
         "name": "SK 28/5 %40-%49",
-        "dateFrom": "2008-10-01",
+        "dateFrom": "2014-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": 18,
         "days": 4680,
@@ -199,7 +199,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2008-05",
+        "name": "Normal Emeklilik — 2008-05-01",
         "dateFrom": "2008-05-01",
         "dateTo": "2035-12-31",
         "serviceYears": null,
@@ -208,7 +208,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2036-01",
+        "name": "Normal Emeklilik — 2036-01-01",
         "dateFrom": "2036-01-01",
         "dateTo": "2037-12-31",
         "serviceYears": null,
@@ -217,7 +217,7 @@
         "ageMan": 61
       },
       {
-        "name": "Normal Emeklilik — 2038-01",
+        "name": "Normal Emeklilik — 2038-01-01",
         "dateFrom": "2038-01-01",
         "dateTo": "2039-12-31",
         "serviceYears": null,
@@ -226,7 +226,7 @@
         "ageMan": 62
       },
       {
-        "name": "Normal Emeklilik — 2040-01",
+        "name": "Normal Emeklilik — 2040-01-01",
         "dateFrom": "2040-01-01",
         "dateTo": "2041-12-31",
         "serviceYears": null,
@@ -235,7 +235,7 @@
         "ageMan": 63
       },
       {
-        "name": "Normal Emeklilik — 2042-01",
+        "name": "Normal Emeklilik — 2042-01-01",
         "dateFrom": "2042-01-01",
         "dateTo": "2043-12-31",
         "serviceYears": null,
@@ -244,7 +244,7 @@
         "ageMan": 64
       },
       {
-        "name": "Normal Emeklilik — 2044-01",
+        "name": "Normal Emeklilik — 2044-01-01",
         "dateFrom": "2044-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": null,
@@ -369,7 +369,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2008-05",
+        "name": "Normal Emeklilik — 2008-05-01",
         "dateFrom": "2008-05-01",
         "dateTo": "2035-12-31",
         "serviceYears": null,
@@ -378,7 +378,7 @@
         "ageMan": 60
       },
       {
-        "name": "Normal Emeklilik — 2036-01",
+        "name": "Normal Emeklilik — 2036-01-01",
         "dateFrom": "2036-01-01",
         "dateTo": "2037-12-31",
         "serviceYears": null,
@@ -387,7 +387,7 @@
         "ageMan": 61
       },
       {
-        "name": "Normal Emeklilik — 2038-01",
+        "name": "Normal Emeklilik — 2038-01-01",
         "dateFrom": "2038-01-01",
         "dateTo": "2039-12-31",
         "serviceYears": null,
@@ -396,7 +396,7 @@
         "ageMan": 62
       },
       {
-        "name": "Normal Emeklilik — 2040-01",
+        "name": "Normal Emeklilik — 2040-01-01",
         "dateFrom": "2040-01-01",
         "dateTo": "2041-12-31",
         "serviceYears": null,
@@ -405,7 +405,7 @@
         "ageMan": 63
       },
       {
-        "name": "Normal Emeklilik — 2042-01",
+        "name": "Normal Emeklilik — 2042-01-01",
         "dateFrom": "2042-01-01",
         "dateTo": "2043-12-31",
         "serviceYears": null,
@@ -414,7 +414,7 @@
         "ageMan": 64
       },
       {
-        "name": "Normal Emeklilik — 2044-01",
+        "name": "Normal Emeklilik — 2044-01-01",
         "dateFrom": "2044-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": null,
