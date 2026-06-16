@@ -1,245 +1,355 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { hesaplaEmeklilik } from '@/lib/calculator';
-import ResultCard from '@/components/ResultCard';
-import FormSection from '@/components/FormSection';
-import StatCard from '@/components/StatCard';
+import { useState } from 'react';
+import { calculateRetirement, CalculatorInput, RetirementResult } from '@/lib/calculator';
+import { parseDate, formatDate } from '@/lib/retirement-rules';
 
 export default function Home() {
-  const [form, setForm] = useState({
-    dogumTarihi: '',
-    cinsiyet: 'erkek' as 'erkek' | 'kadin',
-    ilkIsGirisTarihi: '',
-    priGunu: 0,
-    askerlikBorclanlmasi: 0,
-    askerlikNedir: 'sonra' as 'once' | 'sonra',
-    statular: [] as string[],
-    malulBirimi: 'yok', // 'yok' | 'ilkIste' | 'sk28/5'
-    malulDerece: '', // SK 28/5 için derece
-    bagimaMuhtac: false,
+  const [formData, setFormData] = useState({
+    status: '4a',
+    birthDate: '',
+    entryDate: '',
+    gender: 'erkek' as 'erkek' | 'kadin',
+    serviceDay: '0',
+    militaryService: '0',
+    disabilityType: 'none' as 'none' | 'sk284' | 'sk285',
+    disabilityDegree: '%50-%59' as '%40-%49' | '%50-%59' | '%60+',
+    disabilityDate: '',
   });
 
-  const [hesaplananIlkIsGirisTarihi, setHesaplananIlkIsGirisTarihi] = useState<string>('');
+  const [results, setResults] = useState<RetirementResult[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showResults, setShowResults] = useState(true);
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!form.dogumTarihi) newErrors.dogumTarihi = 'Doğum tarihi gereklidir';
-    if (!form.ilkIsGirisTarihi) newErrors.ilkIsGirisTarihi = 'İlk işe giriş tarihi gereklidir';
-
-    const dogum = new Date(form.dogumTarihi);
-    const ilkGiriş = new Date(form.ilkIsGirisTarihi);
-    const simdi = new Date();
-
-    if (dogum > simdi) newErrors.dogumTarihi = 'Doğum tarihi gelecekte olamaz';
-    if (ilkGiriş > simdi) newErrors.ilkIsGirisTarihi = 'İşe giriş tarihi gelecekte olamaz';
-    if (ilkGiriş <= dogum) newErrors.ilkIsGirisTarihi = 'İşe giriş tarihi doğum tarihinden sonra olmalı';
-
-    if (form.priGunu < 0) newErrors.priGunu = 'Prim günü negatif olamaz';
-    if (form.priGunu > 20000) newErrors.priGunu = 'Prim günü 20000 günü aşamaz';
-
-    if (form.askerlikBorclanlmasi < 0) newErrors.askerlikBorclanlmasi = 'Askerlik borçlanması negatif olamaz';
-    if (form.askerlikBorclanlmasi > 10000) newErrors.askerlikBorclanlmasi = 'Askerlik borçlanması 10000 günü aşamaz';
-
-    if (form.statular.length === 0) newErrors.statular = 'En az bir statü seçilmelidir';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    if (type === 'number') {
-      setForm({ ...form, [name]: parseInt(value) || 0 });
-    } else {
-      setForm({ ...form, [name]: value });
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+    }));
+  };
+
+  const handleCalculate = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: string[] = [];
+
+    // Validation
+    const birthDate = parseDate(formData.birthDate);
+    const entryDate = parseDate(formData.entryDate);
+
+    if (!birthDate) newErrors.push('Geçerli doğum tarihi (DD.MM.YYYY) girin');
+    if (!entryDate) newErrors.push('Geçerli işe giriş tarihi (DD.MM.YYYY) girin');
+
+    if (formData.disabilityType !== 'none' && !formData.disabilityDegree) {
+      newErrors.push('Malüllük derecesi seçin');
     }
-    // Clear error for this field
-    if (errors[name]) {
-      const newErrors = { ...errors };
-      delete newErrors[name];
+
+    if (formData.disabilityType === 'sk285' && !parseDate(formData.disabilityDate)) {
+      newErrors.push('Malüllük tarihini girin');
+    }
+
+    if (newErrors.length > 0) {
       setErrors(newErrors);
+      return;
     }
-  };
 
-  const handleCheckbox = (statü: string) => {
-    // Radio button: sadece bir seçim
-    setForm({
-      ...form,
-      statular: [statü], // Her zaman sadece bir element
-    });
-    if (errors.statular) {
-      const newErrors = { ...errors };
-      delete newErrors.statular;
-      setErrors(newErrors);
-    }
-  };
+    const input: CalculatorInput = {
+      status: formData.status,
+      birthDate: birthDate!,
+      entryDate: entryDate!,
+      referenceDate: new Date(),
+      gender: formData.gender,
+      serviceDay: parseInt(formData.serviceDay) || 0,
+      militaryService: parseInt(formData.militaryService) || 0,
+      disabilityType: formData.disabilityType,
+      disabilityDegree: formData.disabilityDegree as any,
+      disabilityDate: formData.disabilityDate ? parseDate(formData.disabilityDate) || undefined : undefined,
+    };
 
-  const handleHesapla = () => {
-    if (validateForm()) {
-      setShowResults(true);
-    } else {
-      setShowResults(false);
-    }
-  };
-
-  const handleAskerlikChange = (nedir: 'once' | 'sonra') => {
-    setForm({ ...form, askerlikNedir: nedir });
-  };
-
-  const handleMalulBirimiChange = (birim: string) => {
-    setForm({ ...form, malulBirimi: birim, malulDerece: '' }); // Derece sıfırla
-  };
-
-  const handleMalulDereceChange = (derece: string) => {
-    setForm({ ...form, malulDerece: derece });
-  };
-
-  const handleBagimaMuhtacChange = (value: boolean) => {
-    setForm({ ...form, bagimaMuhtac: value });
-  };
-
-  // Input validasyonu - gerekli alanlar boşsa hesaplama yapma
-  const inputsValid = !!(form.dogumTarihi && form.ilkIsGirisTarihi && form.statular.length > 0);
-
-  const sonuc = useMemo(
-    () => {
-      // Boş input varsa hesaplama yapma
-      if (!inputsValid) {
-        return {
-          yas: 0,
-          hizmetYili: 0,
-          priGunleri: form.priGunu,
-          hesaplananIlkIsGirisTarihi: '',
-          emeklilikKosullari: [],
-          yakinEmeklilik: null,
-        };
-      }
-
-      return hesaplaEmeklilik(
-        form.dogumTarihi,
-        form.ilkIsGirisTarihi,
-        form.priGunu,
-        form.askerlikBorclanlmasi,
-        form.askerlikNedir,
-        form.cinsiyet,
-        form.statular,
-        form.malulBirimi,
-        form.malulDerece,
-        form.bagimaMuhtac
-      );
-    },
-    [form, inputsValid]
-  );
-
-  // Update hesaplanan tarih state
-  useMemo(() => {
-    setHesaplananIlkIsGirisTarihi(sonuc.hesaplananIlkIsGirisTarihi || '');
-  }, [sonuc.hesaplananIlkIsGirisTarihi]);
-
-  const formatTarih = (date: Date) => {
-    return new Intl.DateTimeFormat('tr-TR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(date);
+    const calculatedResults = calculateRetirement(input);
+    setResults(calculatedResults);
+    setShowResults(true);
+    setErrors([]);
   };
 
   return (
-    <main className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Emeklilik Hesaplayıcı
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            SGK Emeklilik Hesaplama
           </h1>
-          <p className="text-gray-600 text-sm md:text-base">
-            SGK emeklilik aylığı bağlama koşulları
+          <p className="text-gray-600">
+            Normal, Yaştan ve Malüllük Emeklilik Şartlarını Kontrol Edin
           </p>
         </div>
 
-        {/* Grid Layout: Form (left) + Results (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Form Column - takes 1 col on mobile, 1 col on desktop */}
-          <div className="lg:col-span-1">
-            <FormSection
-              form={form}
-              hesaplananIlkIsGirisTarihi={hesaplananIlkIsGirisTarihi}
-              errors={errors}
-              onFormChange={handleFormChange}
-              onCheckbox={handleCheckbox}
-              onAskerlikChange={handleAskerlikChange}
-              onMalulBirimiChange={handleMalulBirimiChange}
-              onMalulDereceChange={handleMalulDereceChange}
-              onBagimaMuhtacChange={handleBagimaMuhtacChange}
-              onHesapla={handleHesapla}
-            />
-          </div>
-
-          {/* Results Column - takes 1 col on mobile, 2 col on desktop */}
-          {showResults && (
-            <div className="lg:col-span-2 space-y-6">
-              {/* Stats Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <StatCard label="Yaş" value={sonuc.yas} />
-                <StatCard label="Hizmet Yılı" value={sonuc.hizmetYili} />
-                <StatCard label="Toplam Gün" value={sonuc.priGunleri} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Form */}
+          <div className="lg:col-span-1 bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Bilgiler</h2>
+            
+            <form onSubmit={handleCalculate} className="space-y-4">
+              {/* Statü */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Statü
+                </label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="4a">4/a (SSK)</option>
+                  <option value="4b">4/b (Bağ-Kur)</option>
+                  <option value="4c">4/c (Memur)</option>
+                  <option value="2925">2925 (Tarım)</option>
+                </select>
               </div>
 
-              {/* Closest Retirement */}
-              {sonuc.yakinEmeklilik && (
-                <div className="card card-info">
-                  <div className="flex items-start justify-between mb-2">
+              {/* Doğum Tarihi */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Doğum Tarihi <span className="text-gray-500">(DD.MM.YYYY)</span>
+                </label>
+                <input
+                  type="text"
+                  name="birthDate"
+                  value={formData.birthDate}
+                  onChange={handleInputChange}
+                  placeholder="01.01.1980"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* İşe Giriş Tarihi */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  İlk İşe Giriş Tarihi <span className="text-gray-500">(DD.MM.YYYY)</span>
+                </label>
+                <input
+                  type="text"
+                  name="entryDate"
+                  value={formData.entryDate}
+                  onChange={handleInputChange}
+                  placeholder="01.01.2000"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Cinsiyet */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cinsiyet
+                </label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="erkek">Erkek</option>
+                  <option value="kadin">Kadın</option>
+                </select>
+              </div>
+
+              {/* Prim Günü */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ek Prim Günü
+                </label>
+                <input
+                  type="number"
+                  name="serviceDay"
+                  value={formData.serviceDay}
+                  onChange={handleInputChange}
+                  min="0"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Askerlik */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Askerlik (yıl)
+                </label>
+                <input
+                  type="number"
+                  name="militaryService"
+                  value={formData.militaryService}
+                  onChange={handleInputChange}
+                  min="0"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Malüllük */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="text-sm font-bold text-gray-900 mb-3">Malüllük Durumu</h3>
+                
+                <div className="space-y-3">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="disabilityType"
+                      value="none"
+                      checked={formData.disabilityType === 'none'}
+                      onChange={handleInputChange}
+                      className="rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Yok</span>
+                  </label>
+
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="disabilityType"
+                      value="sk284"
+                      checked={formData.disabilityType === 'sk284'}
+                      onChange={handleInputChange}
+                      className="rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">SK 28/4 (İlk İşe Girişte)</span>
+                  </label>
+
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="disabilityType"
+                      value="sk285"
+                      checked={formData.disabilityType === 'sk285'}
+                      onChange={handleInputChange}
+                      className="rounded"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">SK 28/5 (Çalışırken)</span>
+                  </label>
+                </div>
+
+                {formData.disabilityType !== 'none' && (
+                  <div className="mt-3 space-y-3">
                     <div>
-                      <p className="text-sm font-medium text-blue-700">Tahmini Emeklilik Tarihi</p>
-                      <p className="text-2xl font-bold text-blue-900 mt-1">
-                        {formatTarih(sonuc.yakinEmeklilik.tarih)}
-                      </p>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Derece
+                      </label>
+                      <select
+                        name="disabilityDegree"
+                        value={formData.disabilityDegree}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="%40-%49">%40-%49</option>
+                        <option value="%50-%59">%50-%59</option>
+                        <option value="%60+">%60+</option>
+                      </select>
                     </div>
-                    <span className="badge badge-info">{sonuc.yakinEmeklilik.adi}</span>
+
+                    {formData.disabilityType === 'sk285' && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Malüllük Tarihi <span className="text-gray-500">(DD.MM.YYYY)</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="disabilityDate"
+                          value={formData.disabilityDate}
+                          onChange={handleInputChange}
+                          placeholder="01.01.2010"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <p className="text-sm text-blue-700 mt-3">
-                    Kalan: <span className="font-semibold">{sonuc.yakinEmeklilik.kalan}</span> gün
-                  </p>
+                )}
+              </div>
+
+              {/* Errors */}
+              {errors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                  {errors.map((error, idx) => (
+                    <p key={idx} className="text-sm text-red-700">• {error}</p>
+                  ))}
                 </div>
               )}
 
-              {/* Retirement Conditions */}
-              <div className="space-y-3">
-                <h2 className="text-lg font-semibold text-gray-900">Emeklilik Şartları</h2>
-                {sonuc.emeklilikKosullari.length === 0 ? (
-                  <div className="card bg-yellow-50 border-2 border-yellow-300">
-                    <p className="text-sm text-yellow-800">Lütfen bir statü seçiniz</p>
-                  </div>
-                ) : (
-                  sonuc.emeklilikKosullari.map((kosul, idx) => (
-                    <ResultCard key={idx} kosul={kosul} />
-                  ))
-                )}
-              </div>
+              {/* Calculate Button */}
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition"
+              >
+                Hesapla
+              </button>
+            </form>
+          </div>
+
+          {/* Results */}
+          {showResults && (
+            <div className="lg:col-span-2 bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Sonuçlar</h2>
+
+              {results.length === 0 ? (
+                <p className="text-gray-600">Sonuç bulunamadı</p>
+              ) : (
+                <div className="space-y-4">
+                  {results.map((result, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-4 rounded-lg border-2 ${
+                        result.eligible
+                          ? 'bg-green-50 border-green-300'
+                          : 'bg-gray-50 border-gray-300'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-lg text-gray-900">
+                          {result.type === 'normal' && '📋 Normal Emeklilik'}
+                          {result.type === 'ageBased' && '🎂 Yaştan Emeklilik'}
+                          {result.type === 'disability' && '♿ Malüllük Emeklilik'}
+                          {' - '}
+                          {result.status}
+                        </h3>
+                        <span className={`text-lg font-bold ${
+                          result.eligible ? 'text-green-600' : 'text-gray-600'
+                        }`}>
+                          {result.eligible ? '✅' : '❌'}
+                        </span>
+                      </div>
+
+                      <p className="text-gray-700 mb-3">{result.message}</p>
+
+                      {result.eligible && result.eligibleDate && (
+                        <p className="text-green-700 font-semibold">
+                          ➜ Tarih: {formatDate(result.eligibleDate)}
+                        </p>
+                      )}
+
+                      {/* Details */}
+                      <div className="mt-3 pt-3 border-t border-gray-200 text-sm">
+                        {result.requiredServiceYears !== undefined && (
+                          <p className="text-gray-600">
+                            Gerekli Hizmet: {result.requiredServiceYears} yıl | Mevcut: {result.currentServiceYears} yıl
+                          </p>
+                        )}
+                        {result.requiredDays !== undefined && (
+                          <p className="text-gray-600">
+                            Gerekli Gün: {result.requiredDays} | Mevcut: {result.currentDays} gün
+                          </p>
+                        )}
+                        {result.requiredAge !== undefined && (
+                          <p className="text-gray-600">
+                            Gerekli Yaş: {result.requiredAge} | Mevcut: {result.currentAge} yaş
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
-
-        {/* Info Box */}
-        <div className="card bg-gray-50 border-2 border-gray-300 text-sm">
-          <p className="font-semibold text-gray-900 mb-2">⚠️ Önemli Bilgi</p>
-          <p className="text-gray-700 mb-2">
-            Bu hesaplayıcı MÜKTEZA_01_02_2023.xlsb dosyasına dayanan bir bilgilendirme aracıdır.
-          </p>
-          <ul className="list-disc list-inside text-gray-600 space-y-1 text-xs">
-            <li>506 SK (SSK) - Normal, Yaştan, EYT, Kademeli koşullar</li>
-            <li>5510 SK - Ana yaşlılık, 15 yıl + gün koşulları</li>
-            <li>2926 SK - Tarım Bağ-Kuru emekliliği</li>
-            <li>Maden Yeraltı emekliliği</li>
-            <li>Kesin bilgi için SGK&apos;ya başvurunuz</li>
-          </ul>
-        </div>
       </div>
-    </main>
+    </div>
   );
 }
