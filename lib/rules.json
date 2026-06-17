@@ -7,7 +7,7 @@
         "dateTo": "1999-09-08",
         "serviceYears": 25,
         "days": 5000,
-        "ageWoman": null,
+        "ageWoman": 58,
         "ageMan": 60
       },
       {
@@ -16,15 +16,6 @@
         "dateTo": "2008-04-30",
         "serviceYears": null,
         "days": 7000,
-        "ageWoman": 58,
-        "ageMan": 60
-      },
-      {
-        "name": "Normal Emeklilik — 09.09.1999-30.04.2008 (Kısmi)",
-        "dateFrom": "1999-09-09",
-        "dateTo": "2008-04-30",
-        "serviceYears": 25,
-        "days": 4500,
         "ageWoman": 58,
         "ageMan": 60
       },
@@ -121,8 +112,80 @@
         "ageMan": 60
       },
       {
-        "name": "Yaşlılık (Kısmi) — 01.05.2008-31.12.2035",
+        "name": "Yaşlılık (Kısmi) — 01.05.2008-31.12.2008",
         "dateFrom": "2008-05-01",
+        "dateTo": "2008-12-31",
+        "serviceYears": null,
+        "days": 4600,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2009-31.12.2009",
+        "dateFrom": "2009-01-01",
+        "dateTo": "2009-12-31",
+        "serviceYears": null,
+        "days": 4700,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2010-31.12.2010",
+        "dateFrom": "2010-01-01",
+        "dateTo": "2010-12-31",
+        "serviceYears": null,
+        "days": 4800,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2011-31.12.2011",
+        "dateFrom": "2011-01-01",
+        "dateTo": "2011-12-31",
+        "serviceYears": null,
+        "days": 4900,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2012-31.12.2012",
+        "dateFrom": "2012-01-01",
+        "dateTo": "2012-12-31",
+        "serviceYears": null,
+        "days": 5000,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2013-31.12.2013",
+        "dateFrom": "2013-01-01",
+        "dateTo": "2013-12-31",
+        "serviceYears": null,
+        "days": 5100,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2014-31.12.2014",
+        "dateFrom": "2014-01-01",
+        "dateTo": "2014-12-31",
+        "serviceYears": null,
+        "days": 5200,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2015-31.12.2015",
+        "dateFrom": "2015-01-01",
+        "dateTo": "2015-12-31",
+        "serviceYears": null,
+        "days": 5300,
+        "ageWoman": 61,
+        "ageMan": 63
+      },
+      {
+        "name": "Yaşlılık (Kısmi) — 01.01.2016-31.12.2035",
+        "dateFrom": "2016-01-01",
         "dateTo": "2035-12-31",
         "serviceYears": null,
         "days": 5400,
@@ -159,16 +222,16 @@
     ],
     "disability": [
       {
-        "name": "SK 28/4 — 2008/Ekim öncesi işe girenler",
+        "name": "SK 28/4 — 2008/Ekim öncesi",
         "dateFrom": "1976-09-08",
         "dateTo": "2008-09-30",
         "serviceYears": 15,
         "days": 3600,
         "degree": null,
-        "note": "İşe başlamadan önce malül olduğu belgelenmeli"
+        "note": "Son 3,5 yıl ve 1260 gün şartı aranır"
       },
       {
-        "name": "SK 28/4 — 2008/Ekim-Aralık işe girenler",
+        "name": "SK 28/4 — 2008/Ekim-Aralık",
         "dateFrom": "2008-10-01",
         "dateTo": "2008-12-31",
         "serviceYears": 15,
@@ -177,7 +240,7 @@
         "note": null
       },
       {
-        "name": "SK 28/4 — 2009 işe girenler",
+        "name": "SK 28/4 — 2009",
         "dateFrom": "2009-01-01",
         "dateTo": "2009-12-31",
         "serviceYears": 15,
@@ -186,7 +249,7 @@
         "note": null
       },
       {
-        "name": "SK 28/4 — 2010 işe girenler",
+        "name": "SK 28/4 — 2010",
         "dateFrom": "2010-01-01",
         "dateTo": "2010-12-31",
         "serviceYears": 15,
@@ -195,7 +258,7 @@
         "note": null
       },
       {
-        "name": "SK 28/4 — 2011+ işe girenler",
+        "name": "SK 28/4 — 2011+",
         "dateFrom": "2011-01-01",
         "dateTo": "2099-12-31",
         "serviceYears": 15,
@@ -352,7 +415,7 @@
   "4b": {
     "normal": [
       {
-        "name": "Normal Emeklilik — 08.09.1999 Öncesi",
+        "name": "Normal Emeklilik — 08.09.1999 Öncesi (EYT)",
         "dateFrom": "1976-09-08",
         "dateTo": "1999-09-08",
         "serviceYears": 20,
@@ -488,7 +551,7 @@
         "serviceYears": 15,
         "days": 3960,
         "degree": null,
-        "note": "Son 3.5 yıl ve 1260 gün şartı aranır"
+        "note": "Son 3,5 yıl ve 1260 gün şartı aranır"
       },
       {
         "name": "SK 28/5 %60+ (Ağır)",
@@ -522,7 +585,7 @@
   "4c": {
     "normal": [
       {
-        "name": "Normal Emeklilik — 08.09.1999 Öncesi",
+        "name": "Normal Emeklilik — 08.09.1999 Öncesi (EYT)",
         "dateFrom": "1976-09-08",
         "dateTo": "1999-09-08",
         "serviceYears": 20,
@@ -599,19 +662,19 @@
         "name": "Yaşlılık (Kısmi) — 08.09.1999 Öncesi",
         "dateFrom": "1976-09-08",
         "dateTo": "1999-09-08",
-        "serviceYears": 15,
-        "days": 5400,
-        "ageWoman": 56,
-        "ageMan": 58
+        "serviceYears": 25,
+        "days": 9000,
+        "ageWoman": null,
+        "ageMan": null
       },
       {
         "name": "Yaşlılık (Kısmi) — 09.09.1999-30.04.2008",
         "dateFrom": "1999-09-09",
         "dateTo": "2008-04-30",
-        "serviceYears": 15,
-        "days": 5400,
-        "ageWoman": 60,
-        "ageMan": 62
+        "serviceYears": 25,
+        "days": 9000,
+        "ageWoman": 61,
+        "ageMan": 61
       },
       {
         "name": "Yaşlılık (Kısmi) — 01.05.2008-31.12.2035",
@@ -652,13 +715,13 @@
     ],
     "disability": [
       {
-        "name": "27.04.2005 Öncesi Engelli — Yaşsız (15 yıl)",
+        "name": "27.04.2005 Öncesi Engelli — Yaşsız",
         "dateFrom": "1976-09-08",
         "dateTo": "2005-04-27",
         "serviceYears": 15,
         "days": 3600,
         "degree": null,
-        "note": "27.04.2005 öncesi engelli mevzuatı ile göreve girenler, yaş şartı aranmaz"
+        "note": "Engellikleri nedeniyle göreve alınanlar, yaş şartı aranmaz"
       },
       {
         "name": "27.04.2005 Sonrası Engelli %50-%59",
@@ -679,13 +742,13 @@
         "note": null
       },
       {
-        "name": "27.04.2005 Sonrası Engelli %60+ (Ağır) — Maluliyet",
+        "name": "27.04.2005 Sonrası Engelli %60+ (Maluliyet)",
         "dateFrom": "2005-04-28",
         "dateTo": "2099-12-31",
         "serviceYears": 10,
         "days": 1800,
         "degree": "%60+",
-        "note": "Ağır engel: SK 25 maluliyet aylığı şartları uygulanır"
+        "note": "Ağır engel: SK 25 maluliyet şartları, 10 yıl sigortalılık ve 1800 gün"
       }
     ]
   },
