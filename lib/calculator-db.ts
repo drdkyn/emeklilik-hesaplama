@@ -62,8 +62,15 @@ export function calculateRetirementOptionsDB(input: RetirementInput): Retirement
   if (!statusRules) throw new Error(`${status} statüsü bulunamadı`);
 
   // Kişinin giriş tarihi bu kuralın tarih aralığında mı?
+  // ÖNEMLİ: rule tarihlerini lokal saatte parse et (UTC değil) - timezone uyumsuzluğunu önler
+  function parseLocal(s: string): Date {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
   function isGecerli(rule: any): boolean {
-    return ilkGirisTarihi >= new Date(rule.dateFrom) && ilkGirisTarihi <= new Date(rule.dateTo);
+    const from = parseLocal(rule.dateFrom);
+    const to = parseLocal(rule.dateTo);
+    return ilkGirisTarihi >= from && ilkGirisTarihi <= to;
   }
 
   function buildKosullar(rule: any, extraServiceYears?: number): { kosullar: RetirementResult['kosullar']; uygun: boolean } {
