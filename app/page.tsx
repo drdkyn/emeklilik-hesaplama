@@ -30,8 +30,6 @@ interface FormState {
   askerlikBorclanlmasi: number;
   askerlikNedir: 'once' | 'sonra';
   statular: string[];
-  malulBirimi?: string;
-  malulDerece?: string;
   /** Sadece 4c statüsü için: 5434 (eski Emekli Sandığı) veya 5510 (yeni memur) */
   lawType?: '5434' | '5510';
 }
@@ -63,8 +61,6 @@ export default function Home() {
     askerlikBorclanlmasi: 0,
     askerlikNedir: 'sonra',
     statular: [],
-    malulBirimi: 'yok',
-    malulDerece: '',
     lawType: '5510',
   });
 
@@ -97,8 +93,6 @@ export default function Home() {
     setForm(prev => ({ 
       ...prev, 
       statular: [statu],
-      malulBirimi: 'yok',     // ← Malülük reset
-      malulDerece: '',        // ← Derece reset
       lawType: '5510',        // ← lawType reset (4c'de varsayılan 5510)
     }));
     setSonuclar(null);
@@ -110,29 +104,12 @@ export default function Home() {
   };
 
   const handleLawTypeChange = (lawType: '5434' | '5510') => {
-    setForm(prev => ({ ...prev, lawType, malulBirimi: 'yok', malulDerece: '' }));
+    setForm(prev => ({ ...prev, lawType }));
     setSonuclar(null);
   };
 
-  const handleMalulBirimiChange = (birim: string) => {
-    // SK 28/4-40 seçilince derece otomatik "+%40" olarak set et
-    // SK 28/4 seçilince derece otomatik "%60+" olarak set et
-    let derece = '';
-    if (birim === 'sk28/4-40') derece = '+%40';
-    else if (birim === 'sk28/4') derece = '%60+';
-    
-    setForm(prev => ({ ...prev, malulBirimi: birim, malulDerece: derece }));
-    setSonuclar(null);
-  };
 
-  const handleMalulDereceChange = (derece: string) => {
-    setForm(prev => ({ ...prev, malulDerece: derece }));
-    setSonuclar(null);
-  };
 
-  const handleBagimaMuhtacChange = (value: boolean) => {
-    setSonuclar(null);
-  };
 
   const handleBorclanmaDahilChange = (dahil: boolean) => {
     setForm(prev => ({ ...prev, borçlanmaDahil: dahil }));
@@ -149,9 +126,7 @@ export default function Home() {
       askerlikBorclanlmasi: 0,
       askerlikNedir: 'sonra',
       statular: [],
-      malulBirimi: 'yok',
-      malulDerece: '',
-      lawType: '5510',
+          lawType: '5510',
     });
     setSonuclar(null);
     setOzet(null);
@@ -171,7 +146,6 @@ export default function Home() {
     else if (!dateFormatRegex.test(form.ilkIsGirisTarihi)) errs.ilkIsGirisTarihi = 'Format: GG.AA.YYYY (örn: 01.01.2004)';
     if (form.statular.length === 0) errs.statular = 'Sigortalılık statüsü seçiniz';
     if (form.priGunu <= 0) errs.priGunu = 'Prim günü zorunludur (0 olamaz)';
-    if (form.malulBirimi === 'sk28/5' && !form.malulDerece) errs.malulDerece = 'Engelli derece seçiniz';
 
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
@@ -180,15 +154,6 @@ export default function Home() {
     const ilkGirisTarihi = parseDate(form.ilkIsGirisTarihi);
     const status = form.statular[0] as '4a' | '4b' | '4c' | '2925';
 
-    const malulMap: Record<string, 'yok' | 'sk284' | 'sk285' | 'm25' | 'adiMalullük'> = {
-      'yok': 'yok',
-      'sk28/4': 'sk284',
-      'sk28/4-40': 'sk284', // +%40 de SK28/4 kapsamında
-      'sk28/5': 'sk285',
-      'm25': 'm25',
-      'adiMalullük': 'adiMalullük',
-    };
-    const malulukTuru = malulMap[form.malulBirimi || 'yok'] || 'yok';
 
     // ÖNEMLİ: 4c statüsünde:
     // - Malülük SEÇİLMEMİŞSE: seçilen lawType (5434/5510) ile hesapla
@@ -197,41 +162,18 @@ export default function Home() {
     
     const selectedLawType = status === '4c' ? form.lawType : undefined;
     
-    if (status === '4c' && malulukTuru !== 'yok') {
-      // 4c + malülük: Sadece seçilen kanun (5434 veya 5510) için hesaplama yap
-      results = calculateRetirementOptionsDB({
-        status,
-        dogumTarihi,
-        cinsiyet: form.cinsiyet,
-        ilkGirisTarihi,
-        priGunu: form.priGunu,
-        borçlanmaOption: form.borçlanmaDahil ? 'dahil' : 'hariç',
-        borçlanmaGunu: 0,
-        askerlikGunu: form.askerlikBorclanlmasi,
-        askerlikNedir: form.askerlikNedir,
-        malulukTuru,
-        derece: form.malulDerece || null,
-        malulTarihi: null,
-        lawType: selectedLawType,
-      });
-    } else {
-      // 4c değil veya malülük seçilmemişse normal şekilde hesapla
-      results = calculateRetirementOptionsDB({
-        status,
-        dogumTarihi,
-        cinsiyet: form.cinsiyet,
-        ilkGirisTarihi,
-        priGunu: form.priGunu,
-        borçlanmaOption: form.borçlanmaDahil ? 'dahil' : 'hariç',
-        borçlanmaGunu: 0,
-        askerlikGunu: form.askerlikBorclanlmasi,
-        askerlikNedir: form.askerlikNedir,
-        malulukTuru,
-        derece: form.malulDerece || null,
-        malulTarihi: null,
-        lawType: status === '4c' ? form.lawType : undefined,
-      });
-    }
+    results = calculateRetirementOptionsDB({
+      status,
+      dogumTarihi,
+      cinsiyet: form.cinsiyet,
+      ilkGirisTarihi,
+      priGunu: form.priGunu,
+      borçlanmaOption: form.borçlanmaDahil ? 'dahil' : 'hariç',
+      borçlanmaGunu: 0,
+      askerlikGunu: form.askerlikBorclanlmasi,
+      askerlikNedir: form.askerlikNedir,
+      lawType: selectedLawType,
+    });
 
     const today = new Date();
     let yas = today.getFullYear() - dogumTarihi.getFullYear();
@@ -254,18 +196,12 @@ export default function Home() {
     }, 100);
   };
 
-  const malulSeçildi = form.malulBirimi && form.malulBirimi !== 'yok';
-
-  // Sonuçları sırala: malüllük seçildiyse disability önce, sonra normal ve yaştan
-  // Sıralama: malüllük seçildiyse disability önce, sonra normal, sonra yaşlılık
+  // Sonuçları sırala: Normal, Yaşlılık
   // Hepsi gösterilir — uygun olanlar yeşil, uygun olmayanlar sarı
   const siraliSonuclar = sonuclar ? (() => {
-    const disability = sonuclar.filter(s => s.type === 'disability');
     const normal = sonuclar.filter(s => s.type === 'normal');
     const age = sonuclar.filter(s => s.type === 'age');
-    if (malulSeçildi) {
-      return [...disability, ...normal, ...age];
-    }
+    return [...normal, ...age];
     return [...normal, ...age];
   })() : [];
 
@@ -291,8 +227,6 @@ export default function Home() {
               onFormChange={handleFormChange}
               onCheckbox={handleCheckbox}
               onAskerlikChange={handleAskerlikChange}
-              onMalulBirimiChange={handleMalulBirimiChange}
-              onMalulDereceChange={handleMalulDereceChange}
               onBorclanmaDahilChange={handleBorclanmaDahilChange}
               onLawTypeChange={handleLawTypeChange}
               onHesapla={handleHesapla}

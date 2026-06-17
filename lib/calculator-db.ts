@@ -11,9 +11,6 @@ export interface RetirementInput {
   borçlanmaGunu: number;
   askerlikGunu: number;
   askerlikNedir: 'once' | 'sonra';
-  malulukTuru: 'yok' | 'sk284' | 'sk285' | 'm25' | 'adiMalullük';
-  derece: string | null;
-  malulTarihi: Date | null;
   /** Sadece 4c statüsü için: hangi kanuna göre değerlendirilecek (5434 = eski Emekli Sandığı, 5510 = yeni memur). */
   lawType?: '5434' | '5510';
 }
@@ -49,7 +46,7 @@ export function calculateRetirementOptionsDB(input: RetirementInput): Retirement
   const {
     status, dogumTarihi, cinsiyet, ilkGirisTarihi,
     priGunu, borçlanmaOption, borçlanmaGunu,
-    askerlikGunu, askerlikNedir, malulukTuru, derece, lawType,
+    askerlikGunu, askerlikNedir, lawType,
   } = input;
 
   const today = new Date();

@@ -10,8 +10,6 @@ interface FormSectionProps {
     askerlikBorclanlmasi: number;
     askerlikNedir: 'once' | 'sonra';
     statular: string[];
-    malulBirimi?: string;
-    malulDerece?: string;
     lawType?: '5434' | '5510';
   };
   hesaplananIlkIsGirisTarihi?: string;
@@ -19,8 +17,6 @@ interface FormSectionProps {
   onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onCheckbox: (statu: string) => void;
   onAskerlikChange: (nedir: 'once' | 'sonra') => void;
-  onMalulBirimiChange: (birim: string) => void;
-  onMalulDereceChange?: (derece: string) => void;
   onBorclanmaDahilChange: (dahil: boolean) => void;
   onLawTypeChange?: (lawType: '5434' | '5510') => void;
   onHesapla: () => void;
@@ -30,7 +26,6 @@ interface FormSectionProps {
 export default function FormSection({
   form, hesaplananIlkIsGirisTarihi, errors,
   onFormChange, onCheckbox, onAskerlikChange,
-  onMalulBirimiChange, onMalulDereceChange,
   onBorclanmaDahilChange, onLawTypeChange, onHesapla, onTemizle,
 }: FormSectionProps) {
   const statu = form.statular[0];
@@ -90,97 +85,6 @@ export default function FormSection({
               </label>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* MALÜLÜK */}
-      {statu && (
-        <div className="section-box bg-purple-50 border-purple-200 mb-3">
-          <p className="text-xs font-semibold text-purple-800 mb-2">
-            Malül/Engelli (dereceli)
-          </p>
-
-          {['4a', '4b', '4c', '2925'].includes(statu) ? (
-            <>
-              <select value={form.malulBirimi || 'yok'}
-                onChange={(e) => onMalulBirimiChange(e.target.value)}
-                className="input-field mb-2">
-                <option value="yok">— Malül değilim —</option>
-
-                {/* 4c / 5434: işe giriş öncesi yaşsız + işe giriş öncesi +%40 + 5434 adi malullük */}
-                {statu === '4c' && lawType === '5434' && (
-                  <>
-                    <option value="sk28/4">İlk işe girişte malül %60 ve üstü</option>
-                    <option value="sk28/4-40">İşe girmeden önce Engelli (+%40)</option>
-                    <option value="sk28/5">İşe girdikten sonra Engelli (dereceli — %50-59/%40-49)</option>
-                    <option value="adiMalullük">5434 Adi Malullük (657 m.105 — 10 yıl/3600 gün)</option>
-                  </>
-                )}
-
-                {/* 4c / 5510: 4b ile aynı sabit kurallar + M25 */}
-                {statu === '4c' && lawType === '5510' && (
-                  <>
-                    <option value="sk28/4">Md.28/4 — İlk işe girişte malül %60 ve üstü</option>
-                    <option value="sk28/5">Md.28/5 — Malül/Engelli (dereceli — %50-59/%40-49)</option>
-                    <option value="m25">Md.25 — İşe giriş sonrası +%60 malüllük (10 yıl/1800 gün)</option>
-                  </>
-                )}
-
-                {/* 4a, 4b, 2925 */}
-                {statu !== '4c' && (
-                  <>
-                    <option value="sk28/4">Md.28/4 — İlk işe girişte malül %60 ve üstü</option>
-                    <option value="sk28/5">Md.28/5 — Malül/Engelli (dereceli)</option>
-                    <option value="m25">Md.25 — İşe giriş sonrası +%60 malüllük (10 yıl/1800 gün)</option>
-                  </>
-                )}
-              </select>
-
-              {/* SK28/5 seçilince derece dropdown açılır */}
-              {form.malulBirimi === 'sk28/5' && (
-                <div className="mt-2 space-y-2">
-                  <select value={form.malulDerece || ''} onChange={(e) => onMalulDereceChange?.(e.target.value)}
-                    className="input-field">
-                    <option value="">— Engel derecesi seçin —</option>
-                    {statu === '4c' && lawType === '5434' ? (
-                      <>
-                        <option value="%50-%59">%50–%59 (Orta)</option>
-                        <option value="%40-%49">%40–%49 (Hafif)</option>
-                      </>
-                    ) : (
-                      // 4a, 4b, 2925: %40-49, %50-59 (60+ SİLİNDİ - SK 28/4 kaplıyor)
-                      <>
-                        <option value="%40-%49">%40–%49 (Hafif)</option>
-                        <option value="%50-%59">%50–%59 (Orta)</option>
-                      </>
-                    )}
-                  </select>
-                  {errors.malulDerece && <p className="text-xs text-red-600">{errors.malulDerece}</p>}
-                </div>
-              )}
-
-              {/* SK 28/4 (%60+) seçilince derece dropdown açılır */}
-              {form.malulBirimi === 'sk28/4' && (
-                <div className="mt-2 space-y-2">
-                  <select value={form.malulDerece || '%60+'} onChange={(e) => onMalulDereceChange?.(e.target.value)}
-                    className="input-field" disabled>
-                    <option value="%60+">%60+ (Ağır) — Sabit</option>
-                  </select>
-                </div>
-              )}
-
-              {/* SK 28/4-40 (+%40) seçilince derece dropdown açılır */}
-              {form.malulBirimi === 'sk28/4-40' && (
-                <div className="mt-2 space-y-2">
-                  <select value={form.malulDerece || '+%40'} onChange={(e) => onMalulDereceChange?.(e.target.value)}
-                    className="input-field" disabled>
-                    <option value="+%40">+%40 (Hafif) — Sabit</option>
-                  </select>
-                </div>
-              )}
-
-            </>
-          ) : null}
         </div>
       )}
 
