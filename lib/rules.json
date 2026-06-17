@@ -366,6 +366,71 @@
     ],
     "disability": [
       {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10 öncesi)",
+        "dateFrom": "1976-09-08",
+        "dateTo": "2008-09-30",
+        "days": 3600,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10-12)",
+        "dateFrom": "2008-10-01",
+        "dateTo": "2008-12-31",
+        "days": 3700,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2009)",
+        "dateFrom": "2009-01-01",
+        "dateTo": "2009-12-31",
+        "days": 3800,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2010)",
+        "dateFrom": "2010-01-01",
+        "dateTo": "2010-12-31",
+        "days": 3900,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2011+)",
+        "dateFrom": "2011-01-01",
+        "dateTo": "2099-12-31",
+        "days": 3960,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
         "name": "SK 28/4 — 2008/Ekim öncesi",
         "dateFrom": "1976-09-08",
         "dateTo": "2008-09-30",
@@ -444,17 +509,6 @@
         "degree": null,
         "note": null,
         "malulukType": "sk284"
-      },
-      {
-        "name": "Md.25 — İşe giriş sonrası +%60 malüllük (10 yıl/1800 gün)",
-        "dateFrom": "2008-10-01",
-        "dateTo": "2099-12-31",
-        "serviceYears": 10,
-        "days": 1800,
-        "degree": "%60+",
-        "lawType": "5510",
-        "malulukType": "m25",
-        "note": "5510 M25 ile aynı şartlar — Bakıma muhtaç olanlarda 10 yıl hizmet şartı aranmaz"
       },
       {
         "name": "SK 28/5 %50-%59 — 2008-10/2008-12",
@@ -921,6 +975,71 @@
     ],
     "disability": [
       {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10 öncesi)",
+        "dateFrom": "1976-09-08",
+        "dateTo": "2008-09-30",
+        "days": 3600,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10-12)",
+        "dateFrom": "2008-10-01",
+        "dateTo": "2008-12-31",
+        "days": 3700,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2009)",
+        "dateFrom": "2009-01-01",
+        "dateTo": "2009-12-31",
+        "days": 3800,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2010)",
+        "dateFrom": "2010-01-01",
+        "dateTo": "2010-12-31",
+        "days": 3900,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2011+)",
+        "dateFrom": "2011-01-01",
+        "dateTo": "2099-12-31",
+        "days": 3960,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
         "name": "SK 28/4",
         "dateFrom": "2008-10-01",
         "dateTo": "2099-12-31",
@@ -959,17 +1078,6 @@
         "degree": "%40-%49",
         "note": null,
         "malulukType": "sk285"
-      },
-      {
-        "name": "Md.25 — İşe giriş sonrası +%60 malüllük (10 yıl/1800 gün)",
-        "dateFrom": "2008-10-01",
-        "dateTo": "2099-12-31",
-        "serviceYears": 10,
-        "days": 1800,
-        "degree": "%60+",
-        "lawType": "5510",
-        "malulukType": "m25",
-        "note": "5510 M25 ile aynı şartlar — Bakıma muhtaç olanlarda 10 yıl hizmet şartı aranmaz"
       },
       {
         "name": "SK 28/5 %50-%59",
@@ -1126,6 +1234,71 @@
     ],
     "disability": [
       {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10 öncesi)",
+        "dateFrom": "2005-04-28",
+        "dateTo": "2008-09-30",
+        "days": 3600,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10-12)",
+        "dateFrom": "2008-10-01",
+        "dateTo": "2008-12-31",
+        "days": 3700,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2009)",
+        "dateFrom": "2009-01-01",
+        "dateTo": "2009-12-31",
+        "days": 3800,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2010)",
+        "dateFrom": "2010-01-01",
+        "dateTo": "2010-12-31",
+        "days": 3900,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2011+)",
+        "dateFrom": "2011-01-01",
+        "dateTo": "2099-12-31",
+        "days": 3960,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
         "name": "İşe Girmeden Önce Engelli — Yaşsız",
         "dateFrom": "1976-09-08",
         "dateTo": "2005-04-27",
@@ -1203,17 +1376,6 @@
         "note": "Adi Malullük: 657 m.105 hastalıkları, 5434 m.53-54 — 10 yıl hizmet, 3600 gün"
       },
       {
-        "name": "5510 M28/4 — Ağır Düzey (+%60)",
-        "dateFrom": "2005-04-28",
-        "dateTo": "2099-12-31",
-        "serviceYears": 15,
-        "days": 3960,
-        "degree": "%60+",
-        "lawType": "5510",
-        "note": "5510 Sayılı Kanun M28/4 — 4/1-c (Memur)",
-        "malulukType": "sk284"
-      },
-      {
         "name": "5510 M28/5 — Orta Düzey (%50-%59)",
         "dateFrom": "2005-04-28",
         "dateTo": "2099-12-31",
@@ -1279,6 +1441,71 @@
       }
     ],
     "disability": [
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10 öncesi)",
+        "dateFrom": "1976-09-08",
+        "dateTo": "2008-09-30",
+        "days": 3600,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2008/10-12)",
+        "dateFrom": "2008-10-01",
+        "dateTo": "2008-12-31",
+        "days": 3700,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2009)",
+        "dateFrom": "2009-01-01",
+        "dateTo": "2009-12-31",
+        "days": 3800,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2010)",
+        "dateFrom": "2010-01-01",
+        "dateTo": "2010-12-31",
+        "days": 3900,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
+      {
+        "name": "5510 SK 28/4 — İlk İşe Girişte Malül (2011+)",
+        "dateFrom": "2011-01-01",
+        "dateTo": "2099-12-31",
+        "days": 3960,
+        "ageWoman": null,
+        "ageMan": null,
+        "serviceYears": 15,
+        "degree": "%60+",
+        "malulukType": "sk284",
+        "lawType": "5510",
+        "note": "5510 SK 28/4 - İlk işe girişte malül olmayanlar"
+      },
       {
         "name": "SK 28/4 — 2008/Ekim öncesi",
         "dateFrom": "1976-09-08",
