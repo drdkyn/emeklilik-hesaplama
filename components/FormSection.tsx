@@ -136,6 +136,7 @@ export default function FormSection({
                 )}
               </select>
 
+              {/* SK28/5 seçilince derece dropdown açılır */}
               {form.malulBirimi === 'sk28/5' && (
                 <div className="mt-2 space-y-2">
                   <select value={form.malulDerece || ''} onChange={(e) => onMalulDereceChange?.(e.target.value)}
