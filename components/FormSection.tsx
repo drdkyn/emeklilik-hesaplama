@@ -150,17 +150,16 @@ export default function FormSection({
                         <option value="%40-%49">%40–%49 (Hafif)</option>
                       </>
                     ) : (
-                      // 4a, 4b, 2925: %40-49, %50-59, %60+
+                      // 4a, 4b, 2925: %40-49, %50-59 (60+ SİLİNDİ - SK 28/4 kaplıyor)
                       <>
                         <option value="%40-%49">%40–%49 (Hafif)</option>
                         <option value="%50-%59">%50–%59 (Orta)</option>
-                        <option value="%60+">%60+ (Ağır)</option>
                       </>
                     )}
                   </select>
                   {errors.malulDerece && <p className="text-xs text-red-600">{errors.malulDerece}</p>}
 
-                  {form.malulDerece === '%60+' && (
+                  {form.malulDerece === '%60+' && statu === '4c' && (
                     <label className="flex items-start gap-2 cursor-pointer p-2 bg-red-50 border border-red-200 rounded-lg">
                       <input type="checkbox" checked={form.bagimaMuhtac || false}
                         onChange={(e) => onBagimaMuhtacChange?.(e.target.checked)}
