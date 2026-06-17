@@ -375,6 +375,15 @@
         "note": "Son 3,5 yıl ve 1260 gün şartı aranır"
       },
       {
+        "name": "SK 28/5 %60+ (Ağır) — 2004-2008 (4a)",
+        "dateFrom": "2004-01-01",
+        "dateTo": "2008-09-30",
+        "serviceYears": 10,
+        "days": 1800,
+        "degree": "%60+",
+        "note": "Bakıma muhtaç olanlarda 10 yıl hizmet şartı aranmaz"
+      },
+      {
         "name": "SK 28/5 %50–%59 — 2004-2008 (4a)",
         "dateFrom": "2004-01-01",
         "dateTo": "2008-09-30",
@@ -896,6 +905,15 @@
         "days": 3960,
         "degree": null,
         "note": "Son 3,5 yıl ve 1260 gün şartı aranır"
+      },
+      {
+        "name": "SK 28/5 %60+ (Ağır) — 2004-2008 (4b)",
+        "dateFrom": "2004-01-01",
+        "dateTo": "2008-09-30",
+        "serviceYears": 10,
+        "days": 1800,
+        "degree": "%60+",
+        "note": "Bakıma muhtaç olanlarda 10 yıl hizmet şartı aranmaz"
       },
       {
         "name": "SK 28/5 %50–%59 — 2004-2008 (4b)",
