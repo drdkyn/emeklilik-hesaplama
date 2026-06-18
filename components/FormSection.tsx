@@ -67,22 +67,41 @@ export default function FormSection({
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div>
           <label className="label">Doğum Tarihi <span className="text-red-500">*</span></label>
-          <input 
-            type="text" 
-            name="dogumTarihi" 
-            value={form.dogumTarihi}
-            onChange={(e) => {
-              // Otomatik noktalar ekleme: 25011977 → 25.01.1977
-              let val = e.target.value.replace(/\D/g, ''); // Sadece rakamlar
-              if (val.length >= 2) val = val.slice(0, 2) + '.' + val.slice(2);
-              if (val.length >= 5) val = val.slice(0, 5) + '.' + val.slice(5, 9);
-              onFormChange({ target: { name: 'dogumTarihi', value: val } } as any);
-            }}
-            placeholder="GG.AA.YYYY"
-            inputMode="numeric"
-            pattern="\d{2}\.\d{2}\.\d{4}"
-            className={`input-field ${errors.dogumTarihi ? 'border-red-500' : ''}`} 
-          />
+          <div className="relative">
+            <input 
+              type="text" 
+              name="dogumTarihi" 
+              value={form.dogumTarihi}
+              onChange={(e) => {
+                // Eğer value boş ise direkt boş yap (hepsini silme desteği)
+                if (e.target.value === '') {
+                  onFormChange({ target: { name: 'dogumTarihi', value: '' } } as any);
+                  return;
+                }
+                
+                // Otomatik noktalar ekleme: 25011977 → 25.01.1977
+                let val = e.target.value.replace(/\D/g, ''); // Sadece rakamlar
+                if (val.length >= 2) val = val.slice(0, 2) + '.' + val.slice(2);
+                if (val.length >= 5) val = val.slice(0, 5) + '.' + val.slice(5, 9);
+                onFormChange({ target: { name: 'dogumTarihi', value: val } } as any);
+              }}
+              placeholder="GG.AA.YYYY"
+              inputMode="numeric"
+              pattern="\d{2}\.\d{2}\.\d{4}"
+              className={`input-field pr-9 ${errors.dogumTarihi ? 'border-red-500' : ''}`} 
+            />
+            <button
+              type="button"
+              onClick={() => {
+                const input = document.querySelector('input[name="dogumTarihi"]') as HTMLInputElement;
+                if (input) input.click();
+              }}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              title="Takvim aç"
+            >
+              📅
+            </button>
+          </div>
           {errors.dogumTarihi && <p className="text-xs text-red-600 mt-0.5">{errors.dogumTarihi}</p>}
         </div>
         <div>
@@ -96,22 +115,41 @@ export default function FormSection({
 
       <div className="mb-3">
         <label className="label">İlk İşe Giriş Tarihi <span className="text-red-500">*</span></label>
-        <input 
-          type="text" 
-          name="ilkIsGirisTarihi" 
-          value={form.ilkIsGirisTarihi}
-          onChange={(e) => {
-            // Otomatik noktalar ekleme: 01012004 → 01.01.2004
-            let val = e.target.value.replace(/\D/g, ''); // Sadece rakamlar
-            if (val.length >= 2) val = val.slice(0, 2) + '.' + val.slice(2);
-            if (val.length >= 5) val = val.slice(0, 5) + '.' + val.slice(5, 9);
-            onFormChange({ target: { name: 'ilkIsGirisTarihi', value: val } } as any);
-          }}
-          placeholder="GG.AA.YYYY"
-          inputMode="numeric"
-          pattern="\d{2}\.\d{2}\.\d{4}"
-          className={`input-field ${errors.ilkIsGirisTarihi ? 'border-red-500' : ''}`} 
-        />
+        <div className="relative">
+          <input 
+            type="text" 
+            name="ilkIsGirisTarihi" 
+            value={form.ilkIsGirisTarihi}
+            onChange={(e) => {
+              // Eğer value boş ise direkt boş yap (hepsini silme desteği)
+              if (e.target.value === '') {
+                onFormChange({ target: { name: 'ilkIsGirisTarihi', value: '' } } as any);
+                return;
+              }
+              
+              // Otomatik noktalar ekleme: 01012004 → 01.01.2004
+              let val = e.target.value.replace(/\D/g, ''); // Sadece rakamlar
+              if (val.length >= 2) val = val.slice(0, 2) + '.' + val.slice(2);
+              if (val.length >= 5) val = val.slice(0, 5) + '.' + val.slice(5, 9);
+              onFormChange({ target: { name: 'ilkIsGirisTarihi', value: val } } as any);
+            }}
+            placeholder="GG.AA.YYYY"
+            inputMode="numeric"
+            pattern="\d{2}\.\d{2}\.\d{4}"
+            className={`input-field pr-9 ${errors.ilkIsGirisTarihi ? 'border-red-500' : ''}`} 
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const input = document.querySelector('input[name="ilkIsGirisTarihi"]') as HTMLInputElement;
+              if (input) input.click();
+            }}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            title="Takvim aç"
+          >
+            📅
+          </button>
+        </div>
         {errors.ilkIsGirisTarihi && <p className="text-xs text-red-600 mt-0.5">{errors.ilkIsGirisTarihi}</p>}
         {hesaplananIlkIsGirisTarihi && (
           <p className="text-xs text-green-700 mt-1 bg-green-50 px-2 py-1 rounded">
