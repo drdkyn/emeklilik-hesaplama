@@ -11,6 +11,7 @@ interface FormSectionProps {
     askerlikNedir: 'once' | 'sonra';
     statular: string[];
     lawType?: '5434' | '5510';
+    disabilityType?: 'before_60' | 'after_60' | 'disability_50_59' | 'disability_40_49';
   };
   hesaplananIlkIsGirisTarihi?: string;
   errors: Record<string, string>;
@@ -19,6 +20,7 @@ interface FormSectionProps {
   onAskerlikChange: (nedir: 'once' | 'sonra') => void;
   onBorclanmaDahilChange: (dahil: boolean) => void;
   onLawTypeChange?: (lawType: '5434' | '5510') => void;
+  onDisabilityTypeChange?: (type: 'before_60' | 'after_60' | 'disability_50_59' | 'disability_40_49' | undefined) => void;
   onHesapla: () => void;
   onTemizle: () => void;
 }
@@ -26,10 +28,11 @@ interface FormSectionProps {
 export default function FormSection({
   form, hesaplananIlkIsGirisTarihi, errors,
   onFormChange, onCheckbox, onAskerlikChange,
-  onBorclanmaDahilChange, onLawTypeChange, onHesapla, onTemizle,
+  onBorclanmaDahilChange, onLawTypeChange, onDisabilityTypeChange, onHesapla, onTemizle,
 }: FormSectionProps) {
   const statu = form.statular[0];
   const lawType = form.lawType || '5510';
+  const disabilityType = form.disabilityType;
 
   return (
     <div className="card overflow-y-auto" style={{ maxHeight: 'calc(100vh - 100px)' }}>
@@ -239,6 +242,27 @@ export default function FormSection({
           ))}
         </div>
       </div>
+
+      {/* 4/a MALÜLLÜK DROPDOWN */}
+      {statu === '4a' && (
+        <div className="section-box bg-purple-50 border-purple-200 mb-3">
+          <label className="label">Malüllük/Engellilik Türü</label>
+          <select 
+            value={disabilityType || ''}
+            onChange={(e) => onDisabilityTypeChange?.(e.target.value as any || undefined)}
+            className="input-field"
+          >
+            <option value="">— Seçilmedi —</option>
+            <option value="before_60">%60 ve Üzeri (İşe Başlamadan Önce)</option>
+            <option value="after_60">%60 ve Üzeri (İşe Başladıktan Sonra)</option>
+            <option value="disability_50_59">%50-%59 Arası</option>
+            <option value="disability_40_49">%40-%49 Arası</option>
+          </select>
+          <p className="text-xs text-gray-500 mt-1.5">
+            Malüllük derecesine göre seçiniz. Boş bırakırsanız sadece normal emeklilik kuralları hesaplanır.
+          </p>
+        </div>
+      )}
 
       {/* ASKERLİK */}
       <div className="section-box bg-blue-50 border-blue-200 mb-3">

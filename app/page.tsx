@@ -30,18 +30,15 @@ interface FormState {
   askerlikBorclanlmasi: number;
   askerlikNedir: 'once' | 'sonra';
   statular: string[];
-  /** Sadece 4c statüsü için: 5434 (eski Emekli Sandığı) veya 5510 (yeni memur) */
   lawType?: '5434' | '5510';
+  disabilityType?: 'before_60' | 'after_60' | 'disability_50_59' | 'disability_40_49';
 }
 
 function parseDate(str: string): Date {
-  // GG.AA.YYYY veya YYYY-MM-DD formatlarını kabul et
   if (str.includes('.')) {
-    // GG.AA.YYYY formatı
     const [d, m, y] = str.split('.').map(Number);
     return new Date(y, m - 1, d);
   } else {
-    // YYYY-MM-DD formatı
     const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d);
   }
@@ -56,7 +53,6 @@ function dateToYMD(date: Date): { year: number; month: number; day: number } {
 }
 
 function compareDates(date1: Date, date2: Date): number {
-  // Tarih karşılaştırması: YY-MM-DD bazında
   const d1 = dateToYMD(date1);
   const d2 = dateToYMD(date2);
   
@@ -80,6 +76,7 @@ export default function Home() {
     askerlikNedir: 'sonra',
     statular: [],
     lawType: '5510',
+    disabilityType: undefined,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -101,17 +98,15 @@ export default function Home() {
       ...prev,
       [name]: name === 'priGunu' || name === 'askerlikBorclanlmasi' ? Number(value) : value,
     }));
-    // Form değiştiğinde eski sonuçları sil, ki yeniden hesaplanmayan eski sonuçlar görünmesin
     setSonuclar(null);
   };
 
   const handleCheckbox = (statu: string) => {
-    // Statü değiştiğinde malülük seçimini reset et (sekmeler arası geçişte eski veri kalmasın)
-    // lawType de reset et (4a, 4b, 2925'de lawType yoktur, sadece 4c'de vardır)
     setForm(prev => ({ 
       ...prev, 
       statular: [statu],
-      lawType: '5510',        // ← lawType reset (4c'de varsayılan 5510)
+      lawType: '5510',
+      disabilityType: undefined,
     }));
     setSonuclar(null);
   };
@@ -126,8 +121,10 @@ export default function Home() {
     setSonuclar(null);
   };
 
-
-
+  const handleDisabilityTypeChange = (disabilityType: 'before_60' | 'after_60' | 'disability_50_59' | 'disability_40_49' | undefined) => {
+    setForm(prev => ({ ...prev, disabilityType }));
+    setSonuclar(null);
+  };
 
   const handleBorclanmaDahilChange = (dahil: boolean) => {
     setForm(prev => ({ ...prev, borçlanmaDahil: dahil }));
@@ -144,7 +141,8 @@ export default function Home() {
       askerlikBorclanlmasi: 0,
       askerlikNedir: 'sonra',
       statular: [],
-          lawType: '5510',
+      lawType: '5510',
+      disabilityType: undefined,
     });
     setSonuclar(null);
     setOzet(null);
@@ -154,7 +152,6 @@ export default function Home() {
   const handleHesapla = () => {
     const errs: Record<string, string> = {};
     
-    // Tarih format kontrolü: GG.AA.YYYY veya YYYY-MM-DD
     const dateFormatRegex = /^(\d{2}\.\d{2}\.\d{4}|\d{4}-\d{2}-\d{2})$/;
     
     if (!form.dogumTarihi) errs.dogumTarihi = 'Doğum tarihi zorunludur';
@@ -172,13 +169,10 @@ export default function Home() {
     const ilkGirisTarihi = parseDate(form.ilkIsGirisTarihi);
     const status = form.statular[0] as '4a' | '4b' | '4c' | '2925';
 
-
-    // ÖNEMLİ: 4c statüsünde:
-    // - Malülük SEÇİLMEMİŞSE: seçilen lawType (5434/5510) ile hesapla
-    // - Malülük SEÇİLMİŞSE: sadece seçilen lawType ile hesapla (not: tüm kanun kombinasyonları değil)
     let results: HesapSonucu[] = [];
     
     const selectedLawType = status === '4c' ? form.lawType : undefined;
+    const selectedDisabilityType = status === '4a' ? form.disabilityType : undefined;
     
     results = calculateRetirementOptionsDB({
       status,
@@ -191,6 +185,7 @@ export default function Home() {
       askerlikGunu: form.askerlikBorclanlmasi,
       askerlikNedir: form.askerlikNedir,
       lawType: selectedLawType,
+      disabilityType: selectedDisabilityType,
     });
 
     const today = new Date();
@@ -198,27 +193,11 @@ export default function Home() {
     if (today.getMonth() < dogumTarihi.getMonth() ||
       (today.getMonth() === dogumTarihi.getMonth() && today.getDate() < dogumTarihi.getDate())) yas--;
 
-    // Hizmet yılı: 4a'da 18 yaş altı giriş ise 18 yaştan hesapla
     let hizmetYili = today.getFullYear() - ilkGirisTarihi.getFullYear();
     if (today.getMonth() < ilkGirisTarihi.getMonth() ||
       (today.getMonth() === ilkGirisTarihi.getMonth() && today.getDate() < ilkGirisTarihi.getDate())) hizmetYili--;
     
-    // 4a'da 18 yaş altı girişler için hizmet yılını 18 yaştan hesapla
-    if (status === '4a') {
-      const ageAt18 = new Date(dogumTarihi);
-      ageAt18.setFullYear(ageAt18.getFullYear() + 18);
-      
-      if (ilkGirisTarihi < ageAt18) {
-        // 18 yaşından önce girmişse, 18 yaştan hizmet sayıldı
-        hizmetYili = today.getFullYear() - ageAt18.getFullYear();
-        if (today.getMonth() < ageAt18.getMonth() ||
-          (today.getMonth() === ageAt18.getMonth() && today.getDate() < ageAt18.getDate())) hizmetYili--;
-      }
-    }
-
-    const toplamGun = form.borçlanmaDahil
-      ? form.priGunu
-      : form.priGunu + form.askerlikBorclanlmasi;
+    const toplamGun = form.borçlanmaDahil ? form.priGunu + form.askerlikBorclanlmasi : form.priGunu + form.askerlikBorclanlmasi;
 
     setOzet({ yas, hizmetYili, toplamGun });
     setSonuclar(results);
@@ -228,12 +207,11 @@ export default function Home() {
     }, 100);
   };
 
-  // Sonuçları sırala: Normal, Yaştan
-  // Hepsi gösterilir — uygun olanlar yeşil, uygun olmayanlar sarı
   const siraliSonuclar = sonuclar ? (() => {
     const normal = sonuclar.filter(s => s.type === 'normal');
     const age = sonuclar.filter(s => s.type === 'age');
-    return [...normal, ...age];
+    const disability = sonuclar.filter(s => s.type === 'disability');
+    return [...normal, ...age, ...disability];
   })() : [];
 
   const uygunSayisi = siraliSonuclar.filter(s => s.uygun).length;
@@ -248,7 +226,6 @@ export default function Home() {
 
         <div className="flex flex-col lg:flex-row gap-6">
 
-          {/* FORM */}
           <div className="w-full lg:w-80 shrink-0">
             <FormSection
               form={form}
@@ -259,12 +236,12 @@ export default function Home() {
               onAskerlikChange={handleAskerlikChange}
               onBorclanmaDahilChange={handleBorclanmaDahilChange}
               onLawTypeChange={handleLawTypeChange}
+              onDisabilityTypeChange={handleDisabilityTypeChange}
               onHesapla={handleHesapla}
               onTemizle={handleTemizle}
             />
           </div>
 
-          {/* SONUÇLAR */}
           <div className="flex-1" id="sonuclar">
             {sonuclar === null ? (
               <div className="card flex flex-col items-center justify-center py-20 text-center">
@@ -277,20 +254,17 @@ export default function Home() {
             ) : (
               <div className="space-y-4">
 
-                {/* ÖZET */}
                 <div className="grid grid-cols-3 gap-3">
                   <StatCard label="Yaş" value={ozet!.yas} />
                   <StatCard label="Hizmet Yılı" value={ozet!.hizmetYili} />
                   <StatCard label="Toplam Gün" value={ozet!.toplamGun} />
                 </div>
 
-                {/* 18 YAŞ KURALI BİLGİ NOTU */}
                 {form.statular[0] === '4a' && (() => {
                   const dogumTarihi = parseDate(form.dogumTarihi);
                   const ilkGirisTarihi = parseDate(form.ilkIsGirisTarihi);
                   const ageAt18 = new Date(dogumTarihi);
                   ageAt18.setFullYear(ageAt18.getFullYear() + 18);
-                  // compareDates kullan: < 0 ise ilkGiriş, ageAt18'den öncedir
                   return compareDates(ilkGirisTarihi, ageAt18) < 0;
                 })() && (
                   <div className="bg-blue-50 border border-blue-300 rounded-lg p-3">
@@ -302,7 +276,6 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* BANNER */}
                 {uygunSayisi > 0 ? (
                   <div className="bg-green-100 border-2 border-green-500 rounded-xl p-4 text-center">
                     <p className="text-green-800 font-bold text-lg">
@@ -317,7 +290,6 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* KARTLAR */}
                 {siraliSonuclar.map((sonuc, idx) => {
                   return (
                     <div
@@ -330,7 +302,6 @@ export default function Home() {
                           : 'card-warning'
                       }`}
                     >
-                      {/* Başlık */}
                       <div className="flex items-start justify-between mb-3 pb-3 border-b border-gray-200">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">
@@ -359,7 +330,6 @@ export default function Home() {
                         </span>
                       </div>
 
-                      {/* Koşullar */}
                       <div className="space-y-2">
                         {sonuc.kosullar.map((kosul, ki) => (
                           <div key={ki}>
@@ -386,7 +356,6 @@ export default function Home() {
                         ))}
                       </div>
 
-                      {/* 18 YAŞ KURALI BİLGİ NOTU (HİZMET YILI VARSA) */}
                       {(() => {
                         const hasServiceYears = sonuc.kosullar.some(k => k.ad === 'Hizmet Yılı');
                         if (!hasServiceYears || form.statular[0] !== '4a') return null;
@@ -396,7 +365,6 @@ export default function Home() {
                         const ageAt18 = new Date(dogumTarihi);
                         ageAt18.setFullYear(ageAt18.getFullYear() + 18);
                         
-                        // compareDates kullan: >= 0 ise 18+ yaşında girmişse gösterme
                         if (compareDates(ilkGirisTarihi, ageAt18) >= 0) return null;
                         
                         return (

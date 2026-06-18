@@ -13,6 +13,8 @@ export interface RetirementInput {
   askerlikNedir: 'once' | 'sonra';
   /** Sadece 4c statüsü için: hangi kanuna göre değerlendirilecek (5434 = eski Emekli Sandığı, 5510 = yeni memur). */
   lawType?: '5434' | '5510';
+  /** Sadece 4a statüsü için: malüllük derecesi (seçilmemişse undefined) */
+  disabilityType?: 'before_60' | 'after_60' | 'disability_50_59' | 'disability_40_49';
 }
 
 export interface RetirementResult {
@@ -46,7 +48,7 @@ export function calculateRetirementOptionsDB(input: RetirementInput): Retirement
   const {
     status, dogumTarihi, cinsiyet, ilkGirisTarihi,
     priGunu, borçlanmaOption, borçlanmaGunu,
-    askerlikGunu, askerlikNedir, lawType,
+    askerlikGunu, askerlikNedir, lawType, disabilityType,
   } = input;
 
   const today = new Date();
@@ -174,6 +176,38 @@ export function calculateRetirementOptionsDB(input: RetirementInput): Retirement
       const { kosullar, uygun } = buildKosullar(rule, effectiveServiceYears);
       results.push({ name: rule.name, type: 'age', uygun, kosullar });
       break; // giriş tarihine uyan ilk kural
+    }
+  }
+
+  // ---- MALÜLLÜK (4a için) ----
+  if (status === '4a' && disabilityType && statusRules.disability) {
+    const disabilityRules = statusRules.disability[disabilityType as keyof typeof statusRules.disability];
+    
+    if (disabilityRules && disabilityRules.rules) {
+      for (const rule of disabilityRules.rules) {
+        if (!isGecerli(rule)) continue;
+        
+        // 4a'da 18 yaş altı girişler için hizmet yılını 18 yaştan hesapla
+        let effectiveServiceYears = undefined;
+        const ageAt18 = new Date(dogumTarihi);
+        ageAt18.setFullYear(ageAt18.getFullYear() + 18);
+        
+        if (ilkGirisTarihi < ageAt18) {
+          effectiveServiceYears = calculateServiceYears(ageAt18, today);
+        }
+        
+        const { kosullar, uygun } = buildKosullar(rule, effectiveServiceYears);
+        results.push({ 
+          name: `Malüllük — ${disabilityRules.label}`, 
+          type: 'disability', 
+          uygun, 
+          kosullar,
+          notlar: disabilityType === 'after_60' 
+            ? 'Bakıma muhtaç olduğu rapor ile belirlenendeyse hizmet süresi şartı aranmaz.'
+            : undefined
+        });
+        break; // giriş tarihine uyan ilk kural
+      }
     }
   }
 
